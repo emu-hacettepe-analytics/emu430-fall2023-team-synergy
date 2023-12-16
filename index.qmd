@@ -3,21 +3,21 @@ title: "Team XXX"
 sidebar: false 
 ---
 
-This is our project webpage.
+Welcome! This is our project webpage.
 
 Please stay tuned to follow our project activities.
 
-This is our template.
-
 # Team Members
 
-1.  [Edin_Džeko](https://tr.wikipedia.org/wiki/Edin_D%C5%BEeko)
+1.  [Beyza Göktaş](https://emu-hacettepe-analytics.github.io/emu430-fall2023-beyzagoktas/)
 
-2.  [Dušan Tadić](https://tr.wikipedia.org/wiki/Du%C5%A1an_Tadi%C4%87)
+2.  [Emre Gül](https://emu-hacettepe-analytics.github.io/emu430-fall2023-emregul57/)
 
-3.  [Frederico Rodrigues de Paula Santos](https://tr.wikipedia.org/wiki/Fred_(1993_do%C4%9Fumlu_futbolcu))
+3.  [Hatice Nur Güneş](https://emu-hacettepe-analytics.github.io/emu430-fall2023-haticenurgunes/)
 
-4.  [Sebastian Szymański](https://tr.wikipedia.org/wiki/Sebastian_Szyma%C5%84ski)
+4.  [Kerem Kaplan](https://emu-hacettepe-analytics.github.io/emu430-fall2023-keremkpln/)
+
+5.  [Osman Bolat](https://emu-hacettepe-analytics.github.io/emu430-fall2023-OsmanBOLAT/)
 
 # Project Topic
 
