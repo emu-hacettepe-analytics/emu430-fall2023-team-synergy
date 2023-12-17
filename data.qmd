@@ -16,9 +16,9 @@ By selecting this data set, our study aims to access the number of existing libr
 
 # **The columns signify**
 
-**City:** The city where data is collected for statistical calculations.
+**city:** The city where data is collected for statistical calculations.
 
-**Year:** The year for which data is collected for statistical calculations.
+**year:** The year for which data is collected for statistical calculations.
 
 **public_lib:** Public library, a type of library that typically provides free services to a broad audience. These libraries are usually designed to meet general reading, educational, and information needs.
 
