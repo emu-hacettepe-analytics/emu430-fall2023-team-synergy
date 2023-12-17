@@ -27,5 +27,3 @@ In our project, we will use a data set containing statistics of museums and libr
 In addition, by working on the cultural values of cities according to years, average, maximum, etc. we can determine the values. These analyzes will help us understand the use of cultural institutions in each city and the balances between demand and provision. The results will guide us in determining the demands for cultural services, identifying deficiencies and highlighting areas that require further development.
 
 # Data Set
-
-**Data source:** [Türkiye Library and Museum Statistics](https://biruni.tuik.gov.tr/medas/?kn=151&locale=tr)
