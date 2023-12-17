@@ -2,6 +2,10 @@
 title: "Data"
 ---
 
+# Tidy Data
+
+[DATA](library_museum.RData)
+
 # General Information About Data
 
 Data are published nationally and according to IBBS (İstatistiki Bölge Birimleri Sınıflandırması) Level 3. There is detailed information about museums and public libraries. In general, museum statistics include the number of museums, the number of works in museums and the number of visitors. Likewise, library statistics include the number of public libraries and the number of books and users of these libraries.
