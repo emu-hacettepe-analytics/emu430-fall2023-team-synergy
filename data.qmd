@@ -2,4 +2,10 @@
 title: "Data"
 ---
 
-Data source: xxx
+#General Information About Data
+Our project includes province-based data on libraries and museums in different provinces of Turkey. This data set includes values such as the number of people registered in the library department, the number of books, and the number of libraries in the provinces; In the museum section, there is important information such as the number of visitors and the number of museums. This data allows us to develop a comprehensive understanding of areas such as culture and access to information, education and tourism.
+
+#Reason to Choose This Data Set
+By selecting this data set, our study aims to access the number of existing libraries and museums in different cities. Simultaneously, we intend to analyze the proportional usage of these locations, enabling us to draw conclusions on a city-by-city basis. Our goal is to compare demand versus availability, identify discrepancies, and pinpoint areas with insufficient cultural institutions.
+This analysis will facilitate the evaluation of library and museum distribution across cities,highlighting areas that may need further development.
+
