@@ -13,3 +13,35 @@ Data are published nationally and according to IBBS (İstatistiki Bölge Birimle
 # Reason to Choose This Data Set
 
 By selecting this data set, our study aims to access the number of existing libraries and museums in different cities. Simultaneously, we intend to analyze the proportional usage of these locations, enabling us to draw conclusions on a city-by-city basis. Our goal is to compare demand versus availability, identify discrepancies, and pinpoint areas with insufficient cultural institutions. This analysis will facilitate the evaluation of library and museum distribution across cities,highlighting areas that may need further development.
+
+# **The columns signify**
+
+**City:** The city where data is collected for statistical calculations.
+
+**Year:** The year for which data is collected for statistical calculations.
+
+**public_lib:** Public library, a type of library that typically provides free services to a broad audience. These libraries are usually designed to meet general reading, educational, and information needs.
+
+**book_num:** Represents the total number of books in a library's collection. This is a measure indicating the breadth, diversity, and scope of information resources a library can offer to its users.
+
+**user_num:** Indicates the total number of users benefiting from the services of a library during a specific period. These users generally include book borrowers, computer users, researchers, or individuals benefiting from other library services.
+
+**user_num_per_thousand:** Number of Beneficiaries per Thousand from Public Libraries.
+
+**loaned_book_num:** Represents the total number of books lent to users during a specific time period.
+
+**ministry_museum_piece_num:** Indicates the total number of pieces in the collections of museums operating under a ministry. These pieces typically cover various subjects such as history, art, culture, archaeology, or natural history.
+
+**ministry_museum_num:** Represents the total number of museums operating in various fields such as culture, art, history, or science, usually owned by the government.
+
+**ministry_museum_visitor_num:** Represents the total number of visitors that museums operating under a ministry received during a specific period.
+
+**ruins_num:** Refers to a region where remnants of past civilizations and historical structures are found. These places typically include cities, settlements, or regions that played a significant cultural or historical role in ancient times.
+
+**private_museum_piece_num:** Represents the total number of pieces in the collection of a private museum. These pieces usually focus on a specific theme, art genre, historical period, or topic, reflecting the art, historical objects, antiques, or other collection items of the museum.
+
+**private_museum_personnel_num:** Indicates the total number of personnel employed by a private museum during a specific period. These personnel typically work in various areas such as museum management, curation, education, visitor services, marketing, conservation, and maintenance.
+
+**private_museum_num:** Represents the total number of private museums within a specific area. Private museums are typically established by individuals, organizations, or collectors and focus on a specific subject, art genre, historical period, or theme.
+
+**private_museum_visitor_num:** Represents the total number of visitors that a private museum received during a specific period.
