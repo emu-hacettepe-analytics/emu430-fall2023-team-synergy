@@ -1,5 +1,4 @@
 ---
-title: "Team Synergy"
 sidebar: false 
 ---
 ![](images/synergy_logo.png){fig-align="center"}
