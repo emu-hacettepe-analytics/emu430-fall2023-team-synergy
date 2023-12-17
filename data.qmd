@@ -14,7 +14,7 @@ Data are published nationally and according to IBBS (İstatistiki Bölge Birimle
 
 By selecting this data set, our study aims to access the number of existing libraries and museums in different cities. Simultaneously, we intend to analyze the proportional usage of these locations, enabling us to draw conclusions on a city-by-city basis. Our goal is to compare demand versus availability, identify discrepancies, and pinpoint areas with insufficient cultural institutions. This analysis will facilitate the evaluation of library and museum distribution across cities,highlighting areas that may need further development.
 
-# **The columns signify**
+# **The Columns Signify**
 
 **city:** The city where data is collected for statistical calculations.
 
