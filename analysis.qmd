@@ -49,8 +49,8 @@ ggplot(data, aes(x = population, y = book_num)) +
   labs(x = "Population", y = "Book Count") + 
   ggtitle("Scatter Plot of Population vs Book Count") +
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5),axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) 
-
+  theme(plot.title = element_text(size = 12, hjust = 0.5),axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) +
+  scale_x_continuous(labels = scales::comma, breaks = seq(0, 15000000, by = 1000000))
 ```
 
 ```{r}
@@ -66,7 +66,7 @@ data |>
   ggtitle("Scatter Plot of Cities vs Book Number Per Population") +
   theme_minimal() +
   theme(plot.title = element_text(size = 12, hjust = 0.5),axis.text.x = element_text(angle = 90, hjust = 1, size = 6)) 
-  #scale_x_continuous(labels = scales::comma, breaks = seq(0, 15000000, by = 1000000))
+
 ```
 
 ```{r}
