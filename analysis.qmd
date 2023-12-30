@@ -104,3 +104,36 @@ data %>%
   theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
 
 ```
+
+
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+library(ggplot2)
+library(ggrepel)
+library(dplyr)
+
+# Veri setini yükleyin ve 'data' adı altında atayın
+load("library_museum_updated.RData")
+data <- library_museum_updated
+
+# Yüksek 'cinema_audiences_num' değerlerine sahip 2020 yılı verisini hazırlayın
+top_cities_2020 <- data %>%
+  filter(year == 2020) %>%
+  arrange(desc(cinema_audiences_num)) %>%
+  slice(1:10)
+
+# Scatter plot oluşturun ve etiketleri iyileştirin
+ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = city)) +
+  geom_point() +
+  geom_text_repel(size = 3.5) + # Etiketlerin çakışmasını önleyin
+  theme_minimal() +
+  labs(title = "Top 10 Cities by Cinema Audiences in 2020",
+       x = "Population",
+       y = "Cinema Audiences Number") +
+  scale_x_continuous(labels = scales::comma, limits = c(NA, 1.5e7)) + # X ekseni sınırlarını ve etiket formatını ayarlayın
+  scale_y_continuous(labels = scales::comma, limits = c(NA, 4e6)) # Y ekseni sınırlarını ve etiket formatını ayarlayın
+
+
+```
