@@ -1,5 +1,8 @@
 ---
 title: "Analysis"
+editor: 
+  markdown: 
+    wrap: 72
 ---
 
 Loading necessary libraries :
@@ -39,7 +42,11 @@ cor_pop_book <- cor(data$population, data$book_num)
 cat("Correlation between Population and Number of Books:",cor_pop_book,"\n")
 ```
 
-The correlation of 0.8455922 indicates a strong positive relationship between population and the number of books. In other words, as the population of cities generally increases, there is a tendency for the number of books in libraries to increase as well. Let's try to support this with visualizations.
+The correlation of 0.8455922 indicates a strong positive relationship
+between population and the number of books. In other words, as the
+population of cities generally increases, there is a tendency for the
+number of books in libraries to increase as well. Let's try to support
+this with visualizations.
 
 ### Plots
 
@@ -56,7 +63,11 @@ ggplot(data, aes(x = population, y = book_num)) +
   scale_x_continuous(labels = scales::comma, breaks = seq(0, 15000000, by = 1000000))
 ```
 
-According to the 2022 data from the Turkish Statistical Institute, 97.6% of the cities in Turkey have a population of less than 5 million. As seen in the above graph, the areas where the points are dense correspond to locations with a population of less than 5 million. For this reason, the following plot was created.
+According to the 2022 data from the Turkish Statistical Institute, 97.6%
+of the cities in Turkey have a population of less than 5 million. As
+seen in the above graph, the areas where the points are dense correspond
+to locations with a population of less than 5 million. For this reason,
+the following plot was created.
 
 ```{r}
 #| code-fold: true
@@ -73,7 +84,9 @@ data %>%
   scale_x_continuous(labels = scales::comma, breaks = seq(0, 5000000, by = 1000000))+ scale_y_continuous(labels = scales::comma)
 ```
 
-We supported the correlation results with visualizations. We can say that there is a tendency for the number of books in libraries to increase as the population in cities generally increases.
+We supported the correlation results with visualizations. We can say
+that there is a tendency for the number of books in libraries to
+increase as the population in cities generally increases.
 
 ### 2) The number of historical remnants in cities in Türkiye
 
@@ -114,7 +127,6 @@ data %>%
 
 ```
 
-
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -146,11 +158,22 @@ data %>%
 
 ```
 
+<<<<<<< HEAD
 
+=======
+```{r}
+
+ #| code-fold: true #|
+ #|  code-summary: "Show the code"
+  data |> group_by(year)|> summarize(user=sum(user_num)/10000) |>ggplot(aes(x=year,y=user))+ geom_line(color="blue")
+
+```
+>>>>>>> 761df4c95f330770508ade3764047ad51297cb3f
 
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
+<<<<<<< HEAD
 library(ggplot2)
 library(ggrepel)
 library(dplyr)
@@ -175,6 +198,25 @@ ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = ci
        y = "Cinema Audiences Number") +
   scale_x_continuous(labels = scales::comma, limits = c(NA, 1.5e7)) + # X ekseni sınırlarını ve etiket formatını ayarlayın
   scale_y_continuous(labels = scales::comma, limits = c(NA, 4e6)) # Y ekseni sınırlarını ve etiket formatını ayarlayın
+=======
+data1 <- library_museum_data |>
+  group_by(city) |>
+  summarize(lib_num = mean(public_lib)) |>
+  arrange(desc(lib_num))  # Kütüphane sayısına göre sıralama
+
+# En yüksek 20 şehri seçin
+top_20_cities <- head(data1, 20)
+
+# Görselleştirme
+ggplot(top_20_cities, aes(x = reorder(city, lib_num), y = lib_num)) +
+  geom_bar(stat = "identity", fill = "purple", width = 0.7) +  # Bar grafiği oluşturma
+  coord_flip() +  # x ve y ekseni yerlerini değiştirme
+  labs(title = "The library count of the top 20 cities with the highest number of libraries",
+       x = "City",
+       y = "Average Library Number") +
+  theme_minimal() 
+```
+>>>>>>> 761df4c95f330770508ade3764047ad51297cb3f
 
 
 ```
