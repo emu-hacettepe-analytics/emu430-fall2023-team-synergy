@@ -161,12 +161,14 @@ data %>%
 ```{r}
 
  #| code-fold: true #|
- #|  code-summary: "Show the code"
+ #| code-summary: "Show the code"
   data |> group_by(year)|> summarize(user=sum(user_num)/10000)|>
  ggplot(aes(x=year,y=user))+ geom_line(color="blue")
 
 ```
 
+
+```
 
 
 
