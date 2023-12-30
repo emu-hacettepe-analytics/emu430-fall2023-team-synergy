@@ -13,6 +13,7 @@ library(ggplot2)
 library(tidyverse)
 library(dplyr)
 library(knitr)
+
 ```
 
 Load the data:
@@ -146,13 +147,12 @@ data %>%
 ```
 
 ```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
+
 
 top_cities_2020 <- data %>%
   filter(year == 2020) %>%
   arrange(desc(cinema_audiences_num)) %>%
-  slice(1:10)
+  slice(1:11)
 
 
 ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = city)) +
@@ -164,5 +164,6 @@ ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = ci
        y = "Sinema Seyirci Sayısı") +
   scale_x_continuous(labels = scales::comma) +
   scale_y_continuous(labels = scales::comma)
+
 
 ```
