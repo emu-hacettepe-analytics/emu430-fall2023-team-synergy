@@ -367,6 +367,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p><img src="analysis_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
+<p>#| code-fold: true #| code-summary: “Show the code” data&lt;-library_museum_updated%&gt;% group_by(year)%&gt;% summarize(user=sum(user_num)) ggplot(data,aes(x=year,y=user))+ geom_line(color=“blue”)</p>
 
 
 </section>

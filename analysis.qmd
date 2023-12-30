@@ -145,3 +145,15 @@ data %>%
   theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
 
 ```
+
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+data<-library_museum_updated%>%
+  group_by(year)%>%
+  summarize(user=sum(user_num))
+ggplot(data,aes(x=year,y=user))+
+  geom_line(color="blue")
+
+
