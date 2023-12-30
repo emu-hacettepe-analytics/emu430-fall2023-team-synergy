@@ -169,9 +169,9 @@ data %>%
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-data1 <- library_museum_data %>%
-  group_by(city) %>%
-  summarize(lib_num = mean(public_lib)) %>%
+data1 <- library_museum_data |>
+  group_by(city) |>
+  summarize(lib_num = mean(public_lib)) |>
   arrange(desc(lib_num))  # Kütüphane sayısına göre sıralama
 
 # En yüksek 20 şehri seçin
