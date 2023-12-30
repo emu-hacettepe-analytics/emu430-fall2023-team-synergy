@@ -56,31 +56,32 @@ ggplot(data, aes(x = population, y = book_num)) +
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-data |>
-  filter(year==2022) |>
-  mutate(book_per_person=book_num/population) |>
-  ggplot(aes(x = city, y = book_per_person*100)) +
+data %>%
+  filter(year == 2022) %>%
+  mutate(book_per_person=book_num/population,city = factor(city, levels = unique(city[order(book_per_person, decreasing = TRUE)]))) %>%
+  ggplot(aes(x = city, y = book_per_person * 100)) +
   geom_point(color = "purple") +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
-  labs(x = "Cities", y = "Book Number Per Population(*100)") + 
+  labs(x = "Cities", y = "Book Number Per Population (*100)") + 
   ggtitle("Scatter Plot of Cities vs Book Number Per Population") +
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5),axis.text.x = element_text(angle = 90, hjust = 1, size = 6)) 
+  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
+
 
 ```
 
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-data |>
-  filter(year==2022) |>
-  mutate(museum_per_person=(ministry_museum_num + private_museum_num)/population) |>
-  ggplot(aes(x = city, y = museum_per_person*100000)) +
+data %>%
+  filter(year == 2022) %>%
+  mutate(museum_per_person=((ministry_museum_num + private_museum_num)/population), city = factor(city, levels = unique(city[order(museum_per_person, decreasing = TRUE)]))) %>%
+  ggplot(aes(x = city, y = museum_per_person * 100000)) +
   geom_point(color = "purple") +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
-  labs(x = "Cities", y = "Museum Number Per Population(*100000)") + 
+  labs(x = "Cities", y = "Museum Number Per Population (*100000)") + 
   ggtitle("Scatter Plot of Cities vs Museum Number Per Population") +
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5),axis.text.x = element_text(angle = 90, hjust = 1, size = 6)) 
+  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
 
 ```
