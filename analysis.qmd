@@ -13,6 +13,7 @@ library(ggplot2)
 library(tidyverse)
 library(dplyr)
 library(knitr)
+library(ggrepel)
 
 ```
 
@@ -152,7 +153,7 @@ data %>%
 top_cities_2020 <- data %>%
   filter(year == 2020) %>%
   arrange(desc(cinema_audiences_num)) %>%
-  slice(1:11)
+  slice(1:10)
 
 
 ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = city)) +
