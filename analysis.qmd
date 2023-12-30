@@ -159,7 +159,14 @@ data %>%
 ```
 
 ```{r}
-<<<<<<< HEAD
+
+ #| code-fold: true #|
+ #|  code-summary: "Show the code"
+  data |> group_by(year)|> summarize(user=sum(user_num)/10000) |>ggplot(aes(x=year,y=user))+ geom_line(color="blue")
+
+```
+
+```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
 data1 <- library_museum_data %>%
@@ -178,9 +185,7 @@ ggplot(top_20_cities, aes(x = reorder(city, lib_num), y = lib_num)) +
        x = "City",
        y = "Average Library Number") +
   theme_minimal() 
-=======
- #| code-fold: true #|
- #|  code-summary: "Show the code"
-  data |> group_by(year)|> summarize(user=sum(user_num)/10000) |>ggplot(aes(x=year,y=user))+ geom_line(color="blue")
->>>>>>> 376d6d1786322f7aac4516188601c771e03eccc3
+```
+
+
 ```
