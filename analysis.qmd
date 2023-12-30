@@ -162,30 +162,13 @@ data %>%
 
  #| code-fold: true #|
  #|  code-summary: "Show the code"
-  data |> group_by(year)|> summarize(user=sum(user_num)/10000) |>ggplot(aes(x=year,y=user))+ geom_line(color="blue")
+  data |> group_by(year)|> summarize(user=sum(user_num)/10000)|>
+ ggplot(aes(x=year,y=user))+ geom_line(color="blue")
 
 ```
 
-```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
-data1 <- library_museum_data |>
-  group_by(city) |>
-  summarize(lib_num = mean(public_lib)) |>
-  arrange(desc(lib_num))  # Kütüphane sayısına göre sıralama
 
-# En yüksek 20 şehri seçin
-top_20_cities <- head(data1, 20)
 
-# Görselleştirme
-ggplot(top_20_cities, aes(x = reorder(city, lib_num), y = lib_num)) +
-  geom_bar(stat = "identity", fill = "purple", width = 0.7) +  # Bar grafiği oluşturma
-  coord_flip() +  # x ve y ekseni yerlerini değiştirme
-  labs(title = "The library count of the top 20 cities with the highest number of libraries",
-       x = "City",
-       y = "Average Library Number") +
-  theme_minimal() 
-```
 
 
 ```
