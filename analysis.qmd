@@ -12,6 +12,7 @@ library(readxl)
 library(ggplot2)
 library(tidyverse)
 library(dplyr)
+library(knitr)
 ```
 
 Load the data:
@@ -73,6 +74,46 @@ data %>%
 ```
 
 We supported the correlation results with visualizations. We can say that there is a tendency for the number of books in libraries to increase as the population in cities generally increases.
+
+### 2) The number of historical remnants in cities in Türkiye
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+top5_ruins <- data %>%
+  filter(year == 2022) %>%
+  arrange(desc(ruins_num)) %>%
+  head(5) %>%
+  select(city, ruins_num)
+kable(top5_ruins, 
+      format = "html", 
+      caption = "Top 5 Cities in Turkey with the Highest Number of Historical Remnants in 2022",
+      col.names = c("City", "Historical Remnants"),
+      align = c("c", "c")) 
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+data %>%
+  filter(year == 2022 & ruins_num > 0) %>%
+  mutate(city = factor(city, levels = unique(city[order(ruins_num, decreasing = FALSE)]))) %>%
+  arrange(desc(ruins_num)) %>%
+  ggplot(aes(x = city, y = ruins_num)) +
+  geom_bar(stat = "identity", fill = "purple", color = "yellow") +
+  labs(x = "City", y = "Number of Historical Remnants") +
+  ggtitle("The number of historical remnants in cities in Türkiye (2022)") +
+  theme_minimal() +
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 0, hjust = 1, size = 5),
+        axis.text.y = element_text(size = 8),
+        plot.title = element_text(size = 12, hjust = 0.5)) +
+  scale_x_discrete(breaks = unique(data$city)) +
+  scale_y_continuous(breaks = seq(0, max(data$ruins_num), by = 1))+
+  coord_flip()
+
+```
+
 
 ```{r}
 #| code-fold: true
