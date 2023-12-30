@@ -151,8 +151,7 @@ data %>%
 
 top_cities_2020 <- data %>%
   filter(year == 2020) %>%
-  arrange(desc(cinema_audiences_num)) %>%
-  slice(1:10)
+  arrange(desc(cinema_audiences_num)) %>%  slice(1:10)
 
 
 ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = city)) +
