@@ -2,8 +2,49 @@
 title: "Analysis"
 ---
 
-About this site
+Loading necessary libraries :
 
 ```{r}
-1 + 1
+#| code-fold: true
+#| code-summary: "Show the code"
+library(readxl)
+library(ggplot2)
 ```
+
+Load the data:
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+load("library_museum_updated.RData")
+data <-library_museum_updated
+```
+
+Correlation between population and the number of books in the library
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+# Veri türlerini düzelt
+data$population <- as.numeric(data$population)
+data$book_num <- as.numeric(data$book_num)
+
+
+# Korelasyon hesapla
+cor_pop_book <- cor(data$population, data$book_num)
+cat("Correlation between Population and Number of Books:",cor_pop_book,"\n")
+```
+Plot
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+ggplot(data, aes(x = population, y = book_num)) +
+  geom_point(color = "purple") +  
+  geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x)+ 
+  labs(x = "Population", y = "Book Count") + 
+  ggtitle("Scatter Plot of Population vs Book Count") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5),axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) +
+  scale_x_continuous(labels = scales::comma, breaks = seq(0, 15000000, by = 1000000))
+```     
