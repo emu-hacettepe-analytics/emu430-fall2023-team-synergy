@@ -146,22 +146,3 @@ data %>%
   theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
 
 ```
-
-```{r}
-
-top_cities_2020 <- data %>%
-  filter(year == 2020) %>%
-  arrange(desc(cinema_audiences_num)) %>%  slice(1:10)
-
-
-ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = city)) +
-  geom_point() +
-  geom_text_repel(size = 3.5) +
-  theme_minimal() +
-  labs(title = "2020 Yılında Sinema Seyirci Sayısı En Yüksek 10 Şehir",
-       x = "Nufus",
-       y = "Sinema Seyirci Sayısı") +
-  scale_x_continuous(labels = scales::comma) +
-  scale_y_continuous(labels = scales::comma)
-
-```
