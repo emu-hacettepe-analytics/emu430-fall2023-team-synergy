@@ -148,8 +148,11 @@ data %>%
 
 ```
 
-```{r}
 
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
 top_cities_2020 <- data %>%
   filter(year == 2020) %>%
   arrange(desc(cinema_audiences_num)) %>%
@@ -165,27 +168,33 @@ ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = ci
        y = "Sinema Seyirci Sayısı") +
   scale_x_continuous(labels = scales::comma) +
   scale_y_continuous(labels = scales::comma)
-
 ```
 
 
-```{r}
 
-data_2020 <- data %>%
-  filter(year == 2020)
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+data_2020 <- data_2020 %>%
+  mutate(loaned_book_per_capita = loaned_book_num / population)
+
 
 top_literacy_cities_2020 <- data_2020 %>%
   arrange(desc(literacy_rate)) %>%
   slice_head(n = 10)
 
-ggplot(top_literacy_cities_2020, aes(x = loaned_book_num, y = suicides_num, color = city)) +
+
+ggplot(top_literacy_cities_2020, aes(x = loaned_book_per_capita, y = suicides_num, color = city)) +
   geom_point() +
   geom_text_repel(aes(label = city)) +
-  labs(x = "Loaned Book Number", y = "Number of Suicides",
+  labs(x = "Loaned Book Number per Capita", y = "Number of Suicides",
        title = "The Effect of Literacy Rate on Suicide Rates") +
   theme_minimal() +
-  theme(legend.position = "right") 
+  theme(legend.position = "right")
+
 ```
+
 
 
 <<<<<<< HEAD
