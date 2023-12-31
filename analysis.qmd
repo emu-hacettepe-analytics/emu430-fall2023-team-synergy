@@ -91,7 +91,7 @@ We supported the correlation results with visualizations. We can say
 that there is a tendency for the number of books in libraries to
 increase as the population in cities generally increases.
 
-### 2) The number of historical remnants in cities in Türkiye
+### 2) The number of historical remnants in cities in Turkiye
 
 ```{r}
 #| code-fold: true
@@ -118,7 +118,7 @@ data %>%
   ggplot(aes(x = city, y = ruins_num)) +
   geom_bar(stat = "identity", fill = "purple", color = "yellow") +
   labs(x = "City", y = "Number of Historical Remnants") +
-  ggtitle("The number of historical remnants in cities in Türkiye (2022)") +
+  ggtitle("The number of historical remnants in cities in Turkiye (2022)") +
   theme_minimal() +
   theme(legend.position = "none",
         axis.text.x = element_text(angle = 0, hjust = 1, size = 5),
@@ -193,20 +193,17 @@ ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = ci
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-
-data_2020 <- data_2020 %>%
-  mutate(loaned_book_per_capita = loaned_book_num / population)
-
+data_2020 <- data %>%
+  filter(year == 2020)
 
 top_literacy_cities_2020 <- data_2020 %>%
   arrange(desc(literacy_rate)) %>%
   slice_head(n = 10)
 
-
-ggplot(top_literacy_cities_2020, aes(x = loaned_book_per_capita, y = suicides_num, color = city)) +
+ggplot(top_literacy_cities_2020, aes(x = loaned_book_num, y = suicides_num, color = city)) +
   geom_point() +
   geom_text_repel(aes(label = city)) +
-  labs(x = "Loaned Book Number per Capita", y = "Number of Suicides",
+  labs(x = "Loaned Book Number", y = "Number of Suicides",
        title = "The Effect of Literacy Rate on Suicide Rates") +
   theme_minimal() +
   theme(legend.position = "right")
