@@ -177,16 +177,11 @@ ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = ci
   geom_point() +
   geom_text_repel(size = 3.5) +
   theme_minimal() +
-  labs(title = "2020 Yılında Sinema Seyirci Sayısı En Yüksek 10 Şehir",
-       x = "Nufus",
-       y = "Sinema Seyirci Sayısı") +
+  labs(title = "Cinema Audience Distribution by Population",
+       x = "Populatıon",
+       y = "cinema_audiences_num") +
   scale_x_continuous(labels = scales::comma) +
   scale_y_continuous(labels = scales::comma)
-=======
- #| code-fold: true #|
- #| code-summary: "Show the code"
-  data |> group_by(year)|> summarize(user=sum(user_num)/10000)|>
- ggplot(aes(x=year,y=user))+ geom_line(color="blue")
 
 ```
 
@@ -245,6 +240,7 @@ ggplot(top_literacy_cities, aes(x = loaned_book_num, y = suicides_num, colour = 
   theme(legend.position = "bottom")  # Efsaneyi altta göstermek içi
 
 ```
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -300,10 +296,6 @@ new_data_2022 <- data.frame(
 
 predictions_2022 <- predict(model, new_data_2022)
 predictions_2022
-
-
-
-
 
 
 ```
