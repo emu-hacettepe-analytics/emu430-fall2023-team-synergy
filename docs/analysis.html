@@ -389,79 +389,103 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="cell">
-<<<<<<< HEAD
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>top_literacy_cities <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(literacy_rate)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(top_literacy_cities, <span class="fu">aes</span>(<span class="at">x =</span> loaned_book_num, <span class="at">y =</span> suicides_num, <span class="at">colour =</span> city)) <span class="sc">+</span></span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> city), <span class="at">max.overlaps =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Loaned Book Number"</span>, <span class="at">y =</span> <span class="st">"Number of Suicides"</span>,</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Scatter Plot of Number of Suicides vs Loaned Book Number for Top 10 Literate Cities"</span>) <span class="sc">+</span></span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)  <span class="co"># Efsaneyi altta göstermek için</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data_2020 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2020</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>top_literacy_cities_2020 <span class="ot">&lt;-</span> data_2020 <span class="sc">%&gt;%</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(literacy_rate)) <span class="sc">%&gt;%</span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(top_literacy_cities_2020, <span class="fu">aes</span>(<span class="at">x =</span> loaned_book_num, <span class="at">y =</span> suicides_num, <span class="at">color =</span> city)) <span class="sc">+</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> city)) <span class="sc">+</span></span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Loaned Book Number"</span>, <span class="at">y =</span> <span class="st">"Number of Suicides"</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"The Effect of Literacy Rate on Suicide Rates"</span>) <span class="sc">+</span></span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"right"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="analysis_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid" width="672"></p>
-=======
+</div>
+</div>
+<p>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD</p>
+<div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>population <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>population)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>book_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>book_num)</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>public_lib <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>public_lib)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>user_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>user_num)</span>
-<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>user_num_per_thousand <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>user_num_per_thousand)</span>
-<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>loaned_book_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>loaned_book_num)</span>
-<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>ministry_museum_piece_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>ministry_museum_piece_num)</span>
-<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>ministry_museum_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>ministry_museum_num)</span>
-<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>ministry_museum_visitor_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>ministry_museum_visitor_num)</span>
-<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>ruins_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>ruins_num)</span>
-<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>private_museum_piece_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>private_museum_piece_num)</span>
-<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>private_museum_personnel_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>private_museum_personnel_num)</span>
-<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>private_museum_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>private_museum_num)</span>
-<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>private_museum_visitor_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>private_museum_visitor_num)</span>
-<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>cinema_audiences_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>cinema_audiences_num)</span>
-<span id="cb12-16"><a href="#cb12-16" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>theater_audiences_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>theater_audiences_num)</span>
-<span id="cb12-17"><a href="#cb12-17" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>literacy_rate <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>literacy_rate)</span>
-<span id="cb12-18"><a href="#cb12-18" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>suicides_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>suicides_num)</span>
-<span id="cb12-19"><a href="#cb12-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb12-20"><a href="#cb12-20" aria-hidden="true" tabindex="-1"></a>cor_pop_book_2 <span class="ot">&lt;-</span> <span class="fu">cor</span>(data<span class="sc">$</span>population, data<span class="sc">$</span>public_lib)</span>
-<span id="cb12-21"><a href="#cb12-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Correlation between Population and Number of Library:"</span>,cor_pop_book_2,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>top_literacy_cities <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(literacy_rate)) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>)</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(top_literacy_cities, <span class="fu">aes</span>(<span class="at">x =</span> loaned_book_num, <span class="at">y =</span> suicides_num, <span class="at">colour =</span> city)) <span class="sc">+</span></span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="dv">3</span>) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_text_repel</span>(<span class="fu">aes</span>(<span class="at">label =</span> city), <span class="at">max.overlaps =</span> <span class="dv">10</span>) <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Loaned Book Number"</span>, <span class="at">y =</span> <span class="st">"Number of Suicides"</span>,</span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">title =</span> <span class="st">"Scatter Plot of Number of Suicides vs Loaned Book Number for Top 10 Literate Cities"</span>) <span class="sc">+</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">legend.position =</span> <span class="st">"bottom"</span>)  <span class="co"># Efsaneyi altta göstermek içi</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<div class="cell-output-display">
+<p><img src="analysis_files/figure-html/unnamed-chunk-12-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>population <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>population)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>book_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>book_num)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>public_lib <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>public_lib)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>user_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>user_num)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>user_num_per_thousand <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>user_num_per_thousand)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>loaned_book_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>loaned_book_num)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>ministry_museum_piece_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>ministry_museum_piece_num)</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>ministry_museum_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>ministry_museum_num)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>ministry_museum_visitor_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>ministry_museum_visitor_num)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>ruins_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>ruins_num)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>private_museum_piece_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>private_museum_piece_num)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>private_museum_personnel_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>private_museum_personnel_num)</span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>private_museum_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>private_museum_num)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>private_museum_visitor_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>private_museum_visitor_num)</span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>cinema_audiences_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>cinema_audiences_num)</span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>theater_audiences_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>theater_audiences_num)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>literacy_rate <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>literacy_rate)</span>
+<span id="cb14-18"><a href="#cb14-18" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>suicides_num <span class="ot">&lt;-</span> <span class="fu">as.numeric</span>(data<span class="sc">$</span>suicides_num)</span>
+<span id="cb14-19"><a href="#cb14-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-20"><a href="#cb14-20" aria-hidden="true" tabindex="-1"></a>cor_pop_book_2 <span class="ot">&lt;-</span> <span class="fu">cor</span>(data<span class="sc">$</span>population, data<span class="sc">$</span>public_lib)</span>
+<span id="cb14-21"><a href="#cb14-21" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Correlation between Population and Number of Library:"</span>,cor_pop_book_2,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Correlation between Population and Number of Library: 0.6077281 </code></pre>
 </div>
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>cor_pop_book_3 <span class="ot">&lt;-</span> <span class="fu">cor</span>(data<span class="sc">$</span>book_num, data<span class="sc">$</span>public_lib)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Correlation between Number of Book and Number of Library:"</span>,cor_pop_book_3,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cor_pop_book_3 <span class="ot">&lt;-</span> <span class="fu">cor</span>(data<span class="sc">$</span>book_num, data<span class="sc">$</span>public_lib)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Correlation between Number of Book and Number of Library:"</span>,cor_pop_book_3,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Correlation between Number of Book and Number of Library: 0.8255445 </code></pre>
 </div>
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>cor_pop_book_4 <span class="ot">&lt;-</span> <span class="fu">cor</span>(data<span class="sc">$</span>user_num, data<span class="sc">$</span>public_lib)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Correlation between User Number and Number of Library:"</span>,cor_pop_book_4,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>cor_pop_book_4 <span class="ot">&lt;-</span> <span class="fu">cor</span>(data<span class="sc">$</span>user_num, data<span class="sc">$</span>public_lib)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Correlation between User Number and Number of Library:"</span>,cor_pop_book_4,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Correlation between User Number and Number of Library: 0.5901935 </code></pre>
 </div>
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>cor_pop_book_5 <span class="ot">&lt;-</span> <span class="fu">cor</span>(data<span class="sc">$</span>literacy_rate, data<span class="sc">$</span>public_lib)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Correlation between Literacy Rate and Number of Library:"</span>,cor_pop_book_5,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>cor_pop_book_5 <span class="ot">&lt;-</span> <span class="fu">cor</span>(data<span class="sc">$</span>literacy_rate, data<span class="sc">$</span>public_lib)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Correlation between Literacy Rate and Number of Library:"</span>,cor_pop_book_5,<span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-stdout">
 <pre><code>Correlation between Literacy Rate and Number of Library: 0.3617824 </code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>data_subset <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2015</span>, <span class="dv">2016</span>, <span class="dv">2017</span>, <span class="dv">2018</span>, <span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2021</span>))</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(public_lib <span class="sc">~</span> population <span class="sc">+</span> book_num <span class="sc">+</span> user_num <span class="sc">+</span> literacy_rate, <span class="at">data =</span> data_subset)</span>
-<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>data_subset <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">%in%</span> <span class="fu">c</span>(<span class="dv">2015</span>, <span class="dv">2016</span>, <span class="dv">2017</span>, <span class="dv">2018</span>, <span class="dv">2019</span>, <span class="dv">2020</span>, <span class="dv">2021</span>))</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">lm</span>(public_lib <span class="sc">~</span> population <span class="sc">+</span> book_num <span class="sc">+</span> user_num <span class="sc">+</span> literacy_rate, <span class="at">data =</span> data_subset)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -486,18 +510,18 @@ Residual standard error: 4.764 on 562 degrees of freedom
 Multiple R-squared:  0.7392,    Adjusted R-squared:  0.7373 
 F-statistic: 398.2 on 4 and 562 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>new_data_2022 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2022</span>) </span>
-<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>new_data_2022 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
-<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">population =</span> new_data_2022<span class="sc">$</span>population,</span>
-<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">book_num =</span> new_data_2022<span class="sc">$</span>book_num,</span>
-<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">user_num =</span> new_data_2022<span class="sc">$</span>user_num,</span>
-<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">literacy_rate =</span> new_data_2022<span class="sc">$</span>literacy_rate</span>
-<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>predictions_2022 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, new_data_2022)</span>
-<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>predictions_2022</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>new_data_2022 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2022</span>) </span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>new_data_2022 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">population =</span> new_data_2022<span class="sc">$</span>population,</span>
+<span id="cb24-6"><a href="#cb24-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">book_num =</span> new_data_2022<span class="sc">$</span>book_num,</span>
+<span id="cb24-7"><a href="#cb24-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">user_num =</span> new_data_2022<span class="sc">$</span>user_num,</span>
+<span id="cb24-8"><a href="#cb24-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">literacy_rate =</span> new_data_2022<span class="sc">$</span>literacy_rate</span>
+<span id="cb24-9"><a href="#cb24-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb24-10"><a href="#cb24-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb24-11"><a href="#cb24-11" aria-hidden="true" tabindex="-1"></a>predictions_2022 <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, new_data_2022)</span>
+<span id="cb24-12"><a href="#cb24-12" aria-hidden="true" tabindex="-1"></a>predictions_2022</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        1         2         3         4         5         6         7         8 
 18.490684 14.132453 17.641446  7.422555 14.834925 39.031562 18.991480  6.192171 
@@ -521,7 +545,6 @@ F-statistic: 398.2 on 4 and 562 DF,  p-value: &lt; 2.2e-16</code></pre>
 15.185798 11.179287 15.077562 15.247013 21.076787 91.842156 24.052591 12.654639 
        81 
  9.328694 </code></pre>
->>>>>>> d6b1aa65e8fbaaebbf3649436cf216491ef458eb
 </div>
 </div>
 
