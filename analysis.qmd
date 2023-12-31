@@ -202,7 +202,8 @@ ggplot(top_literacy_cities_2020, aes(x = loaned_book_num, y = suicides_num, colo
 
 
 ```{r}
-
+#| code-fold: true
+#| code-summary: "Show the code"
 top_literacy_cities <- data %>%
   arrange(desc(literacy_rate)) %>%
   slice_head(n = 10)
@@ -213,8 +214,9 @@ ggplot(top_literacy_cities, aes(x = loaned_book_num, y = suicides_num, colour = 
   labs(x = "Loaned Book Number", y = "Number of Suicides",
        title = "Scatter Plot of Number of Suicides vs Loaned Book Number for Top 10 Literate Cities") +
   theme_minimal() +
-  theme(legend.position = "bottom")  # Efsaneyi altta göstermek için
-=======
+  theme(legend.position = "bottom")  # Efsaneyi altta göstermek içi
+
+```
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -275,6 +277,5 @@ predictions_2022
 
 
 
->>>>>>> d6b1aa65e8fbaaebbf3649436cf216491ef458eb
 
 ```
