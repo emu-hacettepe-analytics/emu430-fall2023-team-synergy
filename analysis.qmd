@@ -7,30 +7,53 @@ editor:
 
 Loading necessary libraries :
 
-```{r}
+```{r, message=FALSE, results='asis'}
 #| warning: false
-#| code-fold: true
 #| code-summary: "Show the code"
+#| code-fold: true
+
 library(readxl)
 library(ggplot2)
 library(tidyverse)
 library(dplyr)
 library(knitr)
 library(ggrepel)
-
+library(reshape2)
 
 ```
 
 Load the data:
 
-```{r}
-#| code-fold: true
+```{r, message=FALSE, results='asis'}
+#| warning: false
 #| code-summary: "Show the code"
+#| code-fold: true
+
 load("library_museum_updated.RData")
 data <-library_museum_updated
 ```
 
-## 1) Relationship between Population and the Number of books in the library
+## 1) Correlation between variables
+
+```{r, message=FALSE, results='asis'}
+#| warning: false
+#| code-summary: "Show the code"
+#| code-fold: true
+
+correlation_matrix <- cor(library_museum_updated[, c(3:21)], use = "complete.obs")
+
+melted_corr_matrix <- melt(correlation_matrix)
+
+ggplot(melted_corr_matrix, aes(Var1, Var2, fill = value)) +
+  geom_tile() +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+
+## 2) Relationship between Population and the Number of books in the library
 
 ```{r}
 #| code-fold: true
@@ -91,7 +114,7 @@ We supported the correlation results with visualizations. We can say
 that there is a tendency for the number of books in libraries to
 increase as the population in cities generally increases.
 
-### 2) The number of historical remnants in cities in Turkiye
+### 3) The number of historical remnants in cities in Turkiye
 
 ```{r}
 #| code-fold: true
