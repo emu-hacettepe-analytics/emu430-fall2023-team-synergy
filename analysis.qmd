@@ -45,13 +45,14 @@ correlation_matrix <- cor(library_museum_updated[, c(3:21)], use = "complete.obs
 melted_corr_matrix <- melt(correlation_matrix)
 
 ggplot(melted_corr_matrix, aes(Var1, Var2, fill = value)) +
-  geom_tile() +
+  geom_tile() + labs(x = " ", y = " ") +
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
 
 ```
 
+In the areas where the squares are dark red, there is a positive correlation between the variables. In cities with a high population, the number of museums, libraries, theater and cinema audience numbers, and the number of suicides are also high. Conversely, when the number of pieces in a museum is high, it is observed that the number of museums, libraries, audience numbers of theaters and cinemas are also high. The variables intersecting in dark blue-purple squares, on the other hand, have a negative correlation. That is, there is an inverse relationship between the proportion of the young population and the literacy rate.
 
 ## 2) Relationship between Population and the Number of books in the library
 
