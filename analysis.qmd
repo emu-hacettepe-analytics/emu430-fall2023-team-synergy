@@ -84,12 +84,12 @@ ggplot(aes(x = literacy_rate, y = prop_youth_population)) +
   geom_point(color = "purple") +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x)+ 
   labs(x = "Literacy Rate", y = "Proportion of Youth Population") + 
-  ggtitle("Scatter Plot of Literacy Rate vs Proportion of Youth Population") +
+  ggtitle("Scatter Plot of Literacy Rate vs Proportion of Youth Population in 2022") +
   theme_minimal() +
   theme(plot.title = element_text(size = 12, hjust = 0.5))
 ```
 
-ACIKLAMA
+ACIKLAMA-beyza
 
 ### 2.2)
 
@@ -144,7 +144,7 @@ We supported the correlation results with visualizations. We can say
 that there is a tendency for the number of books in libraries to
 increase as the population in cities generally increases.
 
-### 2.2)
+### 2.3)
 
 ```{r}
 #| code-fold: true
@@ -155,13 +155,13 @@ data %>%
   ggplot(aes(x = city, y = book_per_person * 100)) +
   geom_point(color = "purple") +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
-  labs(x = "Cities", y = "Book Number Per Population (*100) in 2022") + 
-  ggtitle("Scatter Plot of Cities vs Book Number Per Population") +
+  labs(x = "Cities", y = "Book Number per Population (*100)") + 
+  ggtitle("Scatter Plot of Cities vs Book Number per Population in 2022") +
   theme_minimal() +
   theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
 ```
 
--AÇIKLAMA
+-AÇIKLAMA kerem
 
 ```{r}
 #| code-fold: true
@@ -172,14 +172,32 @@ data %>%
   ggplot(aes(x = city, y = museum_per_person * 100000)) +
   geom_point(color = "purple") +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
-  labs(x = "Cities", y = "Museum Number Per Population (*100000) in 2022") + 
-  ggtitle("Scatter Plot of Cities vs Museum Number Per Population") +
+  labs(x = "Cities", y = "Museum Number per Population (*100000) ") + 
+  ggtitle("Scatter Plot of Cities vs Museum Number per Population in 2022") +
   theme_minimal() +
   theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
 
 ```
 
--AÇIKLAMA-
+-AÇIKLAMA- kerem
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+data %>%
+  filter(year == 2022) %>%
+  mutate(book_num_per_lib=(book_num/public_lib), city = factor(city, levels = unique(city[order(book_num_per_lib, decreasing = TRUE)]))) %>%
+  ggplot(aes(x = city, y = book_num_per_lib )) +
+  geom_point(color = "purple") +  
+  geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
+  labs(x = "Cities", y = "Book Number per Library") + 
+  ggtitle("Scatter Plot of Cities vs Book Number per Library in 2022") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust=1,size=6))
+```
+
+-AÇIKLAMA beyza
 
 ```{r}
 #| code-fold: true
@@ -190,13 +208,43 @@ data %>%
   ggplot(aes(x = city, y = user_num_per_pop )) +
   geom_point(color = "purple") +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
-  labs(x = "Cities", y = "User Number Per Population") + 
-  ggtitle("Scatter Plot of Cities vs User Number Per Population") +
+  labs(x = "Cities", y = "User Number per Population") + 
+  ggtitle("Scatter Plot of Cities vs User Number per Population in 2022") +
   theme_minimal() +
   theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust=1,size=6))
 ```
 
--AÇIKLAMA
+-AÇIKLAMA kerem
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+population_2015 <- data %>%
+  filter(year==2015) %>% select(city,population)
+population_2022 <- data %>%
+  filter(year==2022) %>% select(city,population)
+population_change <- data %>%
+  filter(year==2015) %>% select(city) %>% mutate(population_frac = (population_2022$population-population_2015$population)/population_2015$population) %>% arrange(desc(population_frac))
+
+head(population_change)
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+data %>% 
+  filter(city %in% c("Yalova","Tekirdağ","Antalya","Kocaeli")) %>% mutate(user_num_per_pop=(user_num/population)) %>%
+  ggplot(aes(x = year, y = user_num_per_pop, color = city)) +
+  geom_line() +  
+  labs(x = "Years", y = "User Number per Population") + 
+  ggtitle("Scatter Plot of Cities vs User Number per Population") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5))
+```
+
+-AÇIKLAMA- beyza bişiler sallayacak
 
 ### 3) The number of historical remnants in cities in Turkiye
 
@@ -240,6 +288,7 @@ data %>%
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
+#| warning: false
 top_cities_2020 <- data %>%
   filter(year == 2020) %>%
   arrange(desc(cinema_audiences_num)) %>%
