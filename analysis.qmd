@@ -52,11 +52,47 @@ ggplot(melted_corr_matrix, aes(Var1, Var2, fill = value)) +
 
 ```
 
-In the areas where the squares are dark red, there is a positive correlation between the variables. In cities with a high population, the number of museums, libraries, theater and cinema audience numbers, and the number of suicides are also high. Conversely, when the number of pieces in a museum is high, it is observed that the number of museums, libraries, audience numbers of theaters and cinemas are also high. The variables intersecting in dark blue-purple squares, on the other hand, have a negative correlation. That is, there is an inverse relationship between the proportion of the young population and the literacy rate.
+In the areas where the squares are dark red, there is a positive
+correlation between the variables. In cities with a high population, the
+number of museums, libraries, theater and cinema audience numbers, and
+the number of suicides are also high. Conversely, when the number of
+pieces in a museum is high, it is observed that the number of museums,
+libraries, audience numbers of theaters and cinemas are also high. The
+variables intersecting in dark blue-purple squares, on the other hand,
+have a negative correlation. That is, there is an inverse relationship
+between the proportion of the young population and the literacy rate.
 
 ## 2) Relationship between attributes
 
 ### 2.1)
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+cor_pop_book_2 <- cor(data$literacy_rate, data$prop_youth_population)
+cat("Correlation between Literacy Rate and Proportion of Youth Population:",cor_pop_book_2,"\n")
+```
+
+\-\--ACIKLAMA
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+data|>
+  filter(year==2022)|>
+ggplot(aes(x = literacy_rate, y = prop_youth_population)) +
+  geom_point(color = "purple") +  
+  geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x)+ 
+  labs(x = "Literacy Rate", y = "Proportion of Youth Population") + 
+  ggtitle("Scatter Plot of Literacy Rate vs Proportion of Youth Population") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5))
+```
+
+ACIKLAMA
+
+### 2.2)
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -64,8 +100,11 @@ cor_pop_book <- cor(data$population, data$book_num)
 cat("Correlation between Population and Number of Books:",cor_pop_book,"\n")
 ```
 
-The correlation of 0.8455922 indicates a strong positive relationship between population and the number of books. In other words, as the population of cities generally increases, there is a tendency for the number of books in libraries to increase as well. Let's try to support this with visualizations.
-
+The correlation of 0.8455922 indicates a strong positive relationship
+between population and the number of books. In other words, as the
+population of cities generally increases, there is a tendency for the
+number of books in libraries to increase as well. Let's try to support
+this with visualizations.
 
 ```{r}
 #| code-fold: true
@@ -80,7 +119,11 @@ ggplot(data, aes(x = population, y = book_num)) +
   scale_x_continuous(labels = scales::comma, breaks = seq(0, 15000000, by = 1000000))
 ```
 
-According to the 2022 data from the Turkish Statistical Institute, 97.6% of the cities in Turkey have a population of less than 5 million. As seen in the above graph, the areas where the points are dense correspond to locations with a population of less than 5 million. For this reason, the following plot was created.
+According to the 2022 data from the Turkish Statistical Institute, 97.6%
+of the cities in Turkey have a population of less than 5 million. As
+seen in the above graph, the areas where the points are dense correspond
+to locations with a population of less than 5 million. For this reason,
+the following plot was created.
 
 ```{r}
 #| code-fold: true
@@ -97,9 +140,12 @@ data %>%
   scale_x_continuous(labels = scales::comma, breaks = seq(0, 5000000, by = 1000000))+ scale_y_continuous(labels = scales::comma)
 ```
 
-We supported the correlation results with visualizations. We can say that there is a tendency for the number of books in libraries to increase as the population in cities generally increases.
+We supported the correlation results with visualizations. We can say
+that there is a tendency for the number of books in libraries to
+increase as the population in cities generally increases.
 
 ### 2.2)
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -147,7 +193,7 @@ data %>%
   labs(x = "Cities", y = "User Number Per Population") + 
   ggtitle("Scatter Plot of Cities vs User Number Per Population") +
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
+  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust=1,size=6))
 ```
 
 -AÇIKLAMA
@@ -191,9 +237,6 @@ data %>%
 
 ```
 
-
-
-
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -215,9 +258,6 @@ ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = ci
 
 ```
 
-
-
-
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -237,5 +277,3 @@ ggplot(top_literacy_cities_2020, aes(x = loaned_book_num, y = suicides_num, colo
   theme(legend.position = "right")
 
 ```
-
-
