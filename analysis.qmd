@@ -19,7 +19,7 @@ library(dplyr)
 library(knitr)
 library(ggrepel)
 library(reshape2)
-
+library(gridExtra)
 ```
 
 Load the data:
@@ -33,7 +33,7 @@ load("library_museum_updated.RData")
 data <-library_museum_updated
 ```
 
-## 1) Correlation between variables
+## 1) Correlation Between Attributes
 
 ```{r, message=FALSE, results='asis'}
 #| warning: false
@@ -62,7 +62,7 @@ variables intersecting in dark blue-purple squares, on the other hand,
 have a negative correlation. That is, there is an inverse relationship
 between the proportion of the young population and the literacy rate.
 
-## 2) Relationship between attributes
+## 2) Relationship Between Attributes
 
 ### 2.1)
 
@@ -234,14 +234,23 @@ head(population_change)
 #| code-fold: true
 #| code-summary: "Show the code"
 
-data %>% 
+p1 <- data %>% 
   filter(city %in% c("Yalova","Tekirdağ","Antalya","Kocaeli")) %>% mutate(user_num_per_pop=(user_num/population)) %>%
   ggplot(aes(x = year, y = user_num_per_pop, color = city)) +
   geom_line() +  
   labs(x = "Years", y = "User Number per Population") + 
   ggtitle("Scatter Plot of Cities vs User Number per Population") +
   theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5),legend.position = "none") 
+p2 <- data %>% 
+  filter(city %in% c("Yalova","Tekirdağ","Antalya","Kocaeli")) %>%
+  ggplot(aes(x = year, y = population/10000000, color = city)) +
+  geom_line() +  
+  labs(x = "Years", y = "Population/10M") + 
+  ggtitle("Scatter Plot of Cities vs Population") +
+  theme_minimal() +
   theme(plot.title = element_text(size = 12, hjust = 0.5))
+grid.arrange(p1, p2, ncol = 2)
 ```
 
 -AÇIKLAMA- beyza bişiler sallayacak
@@ -325,4 +334,42 @@ ggplot(top_literacy_cities_2020, aes(x = loaned_book_num, y = suicides_num, colo
   theme_minimal() +
   theme(legend.position = "right")
 
+```
+
+### 3) Regional Analysis
+
+For regional analysis, 'region' column will first be added to the data.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+akdeniz <- c("Antalya", "Burdur", "Isparta", "Mersin", "Adana", "Hatay", "Osmaniye", "Kahramanmaraş")
+dogu_anadolu <- c("Malatya", "Erzincan", "Elazığ", "Tunceli", "Bingöl", "Erzurum", "Muş", "Bitlis", "Şırnak", "Kars", "Ağrı", "Ardahan", "Van", "Iğdır", "Hakkari")
+ege <- c("İzmir", "Aydın", "Muğla", "Manisa", "Denizli", "Uşak", "Kütahya", "Afyon")
+guneydogu_anadolu <- c("Gaziantep", "Kilis", "Adıyaman", "Şanlıurfa", "Diyarbakır", "Mardin", "Batman", "Siirt")
+ic_anadolu <- c("Eskişehir", "Konya", "Ankara", "Çankırı", "Aksaray", "Kırıkkale", "Kırşehir", "Yozgat", "Niğde", "Nevşehir", "Kayseri", "Karaman", "Sivas")
+karadeniz <- c("Bolu", "Düzce", "Zonguldak", "Karabük", "Bartın", "Kastamonu", "Çorum", "Sinop", "Samsun", "Amasya", "Tokat", "Ordu", "Giresun", "Gümüşhane", "Trabzon", "Bayburt", "Rize", "Artvin")
+marmara <- c("Çanakkale", "Balıkesir", "Edirne", "Tekirdağ", "Kırklareli", "İstanbul", "Bursa", "Yalova", "Kocaeli", "Bilecik", "Sakarya")
+
+assign_region <- function(city) {
+  if (city %in% akdeniz) {
+    return("Akdeniz")
+  } else if (city %in% dogu_anadolu) {
+    return("Doğu Anadolu")
+  } else if (city %in% ege) {
+    return("Ege")
+  } else if (city %in% guneydogu_anadolu) {
+    return("Güneydoğu Anadolu")
+  } else if (city %in% ic_anadolu) {
+    return("İç Anadolu")
+  } else if (city %in% karadeniz) {
+    return("Karadeniz")
+  } else if (city %in% marmara) {
+    return("Marmara")
+  } else {
+    return(NA)
+  }
+}
+
+library_museum_updated <- library_museum_updated %>% mutate(region = sapply(city, assign_region)) %>% relocate(region,.after = city)
 ```

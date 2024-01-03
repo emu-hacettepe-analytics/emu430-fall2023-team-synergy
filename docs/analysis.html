@@ -146,13 +146,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#correlation-between-variables" id="toc-correlation-between-variables" class="nav-link active" data-scroll-target="#correlation-between-variables">1) Correlation between variables</a></li>
-  <li><a href="#relationship-between-attributes" id="toc-relationship-between-attributes" class="nav-link" data-scroll-target="#relationship-between-attributes">2) Relationship between attributes</a>
+  <li><a href="#correlation-between-attributes" id="toc-correlation-between-attributes" class="nav-link active" data-scroll-target="#correlation-between-attributes">1) Correlation Between Attributes</a></li>
+  <li><a href="#relationship-between-attributes" id="toc-relationship-between-attributes" class="nav-link" data-scroll-target="#relationship-between-attributes">2) Relationship Between Attributes</a>
   <ul class="collapse">
   <li><a href="#section" id="toc-section" class="nav-link" data-scroll-target="#section">2.1)</a></li>
   <li><a href="#section-1" id="toc-section-1" class="nav-link" data-scroll-target="#section-1">2.2)</a></li>
   <li><a href="#section-2" id="toc-section-2" class="nav-link" data-scroll-target="#section-2">2.3)</a></li>
   <li><a href="#the-number-of-historical-remnants-in-cities-in-turkiye" id="toc-the-number-of-historical-remnants-in-cities-in-turkiye" class="nav-link" data-scroll-target="#the-number-of-historical-remnants-in-cities-in-turkiye">3) The number of historical remnants in cities in Turkiye</a></li>
+  <li><a href="#regional-analysis" id="toc-regional-analysis" class="nav-link" data-scroll-target="#regional-analysis">3) Regional Analysis</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -190,7 +191,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(knitr)</span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggrepel)</span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(reshape2)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gridExtra)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <p>Load the data:</p>
 <details>
@@ -198,8 +200,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"library_museum_updated.RData"</span>)</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span>library_museum_updated</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
-<section id="correlation-between-variables" class="level2">
-<h2 class="anchored" data-anchor-id="correlation-between-variables">1) Correlation between variables</h2>
+<section id="correlation-between-attributes" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-between-attributes">1) Correlation Between Attributes</h2>
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>correlation_matrix <span class="ot">&lt;-</span> <span class="fu">cor</span>(library_museum_updated[, <span class="fu">c</span>(<span class="dv">3</span><span class="sc">:</span><span class="dv">21</span>)], <span class="at">use =</span> <span class="st">"complete.obs"</span>)</span>
@@ -216,7 +218,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>In the areas where the squares are dark red, there is a positive correlation between the variables. In cities with a high population, the number of museums, libraries, theater and cinema audience numbers, and the number of suicides are also high. Conversely, when the number of pieces in a museum is high, it is observed that the number of museums, libraries, audience numbers of theaters and cinemas are also high. The variables intersecting in dark blue-purple squares, on the other hand, have a negative correlation. That is, there is an inverse relationship between the proportion of the young population and the literacy rate.</p>
 </section>
 <section id="relationship-between-attributes" class="level2">
-<h2 class="anchored" data-anchor-id="relationship-between-attributes">2) Relationship between attributes</h2>
+<h2 class="anchored" data-anchor-id="relationship-between-attributes">2) Relationship Between Attributes</h2>
 <section id="section" class="level3">
 <h3 class="anchored" data-anchor-id="section">2.1)</h3>
 <div class="cell">
@@ -404,14 +406,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell">
 <details>
 <summary>Show the code</summary>
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>data <span class="sc">%&gt;%</span> </span>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>p1 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(city <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Yalova"</span>,<span class="st">"Tekirdağ"</span>,<span class="st">"Antalya"</span>,<span class="st">"Kocaeli"</span>)) <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">user_num_per_pop=</span>(user_num<span class="sc">/</span>population)) <span class="sc">%&gt;%</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> user_num_per_pop, <span class="at">color =</span> city)) <span class="sc">+</span></span>
 <span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span>  </span>
 <span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Years"</span>, <span class="at">y =</span> <span class="st">"User Number per Population"</span>) <span class="sc">+</span> </span>
 <span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Scatter Plot of Cities vs User Number per Population"</span>) <span class="sc">+</span></span>
 <span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>),<span class="at">legend.position =</span> <span class="st">"none"</span>) </span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>p2 <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> </span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(city <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Yalova"</span>,<span class="st">"Tekirdağ"</span>,<span class="st">"Antalya"</span>,<span class="st">"Kocaeli"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> population<span class="sc">/</span><span class="dv">10000000</span>, <span class="at">color =</span> city)) <span class="sc">+</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span>  </span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Years"</span>, <span class="at">y =</span> <span class="st">"Population/10M"</span>) <span class="sc">+</span> </span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">ggtitle</span>(<span class="st">"Scatter Plot of Cities vs Population"</span>) <span class="sc">+</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_minimal</span>() <span class="sc">+</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">plot.title =</span> <span class="fu">element_text</span>(<span class="at">size =</span> <span class="dv">12</span>, <span class="at">hjust =</span> <span class="fl">0.5</span>))</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="fu">grid.arrange</span>(p1, p2, <span class="at">ncol =</span> <span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output-display">
 <p><img src="analysis_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="672"></p>
@@ -539,6 +550,44 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <div class="cell-output-display">
 <p><img src="analysis_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
 </div>
+</div>
+</section>
+<section id="regional-analysis" class="level3">
+<h3 class="anchored" data-anchor-id="regional-analysis">3) Regional Analysis</h3>
+<p>For regional analysis, ‘region’ column will first be added to the data.</p>
+<div class="cell">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>akdeniz <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Antalya"</span>, <span class="st">"Burdur"</span>, <span class="st">"Isparta"</span>, <span class="st">"Mersin"</span>, <span class="st">"Adana"</span>, <span class="st">"Hatay"</span>, <span class="st">"Osmaniye"</span>, <span class="st">"Kahramanmaraş"</span>)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>dogu_anadolu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Malatya"</span>, <span class="st">"Erzincan"</span>, <span class="st">"Elazığ"</span>, <span class="st">"Tunceli"</span>, <span class="st">"Bingöl"</span>, <span class="st">"Erzurum"</span>, <span class="st">"Muş"</span>, <span class="st">"Bitlis"</span>, <span class="st">"Şırnak"</span>, <span class="st">"Kars"</span>, <span class="st">"Ağrı"</span>, <span class="st">"Ardahan"</span>, <span class="st">"Van"</span>, <span class="st">"Iğdır"</span>, <span class="st">"Hakkari"</span>)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>ege <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"İzmir"</span>, <span class="st">"Aydın"</span>, <span class="st">"Muğla"</span>, <span class="st">"Manisa"</span>, <span class="st">"Denizli"</span>, <span class="st">"Uşak"</span>, <span class="st">"Kütahya"</span>, <span class="st">"Afyon"</span>)</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a>guneydogu_anadolu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Gaziantep"</span>, <span class="st">"Kilis"</span>, <span class="st">"Adıyaman"</span>, <span class="st">"Şanlıurfa"</span>, <span class="st">"Diyarbakır"</span>, <span class="st">"Mardin"</span>, <span class="st">"Batman"</span>, <span class="st">"Siirt"</span>)</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a>ic_anadolu <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Eskişehir"</span>, <span class="st">"Konya"</span>, <span class="st">"Ankara"</span>, <span class="st">"Çankırı"</span>, <span class="st">"Aksaray"</span>, <span class="st">"Kırıkkale"</span>, <span class="st">"Kırşehir"</span>, <span class="st">"Yozgat"</span>, <span class="st">"Niğde"</span>, <span class="st">"Nevşehir"</span>, <span class="st">"Kayseri"</span>, <span class="st">"Karaman"</span>, <span class="st">"Sivas"</span>)</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a>karadeniz <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Bolu"</span>, <span class="st">"Düzce"</span>, <span class="st">"Zonguldak"</span>, <span class="st">"Karabük"</span>, <span class="st">"Bartın"</span>, <span class="st">"Kastamonu"</span>, <span class="st">"Çorum"</span>, <span class="st">"Sinop"</span>, <span class="st">"Samsun"</span>, <span class="st">"Amasya"</span>, <span class="st">"Tokat"</span>, <span class="st">"Ordu"</span>, <span class="st">"Giresun"</span>, <span class="st">"Gümüşhane"</span>, <span class="st">"Trabzon"</span>, <span class="st">"Bayburt"</span>, <span class="st">"Rize"</span>, <span class="st">"Artvin"</span>)</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a>marmara <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Çanakkale"</span>, <span class="st">"Balıkesir"</span>, <span class="st">"Edirne"</span>, <span class="st">"Tekirdağ"</span>, <span class="st">"Kırklareli"</span>, <span class="st">"İstanbul"</span>, <span class="st">"Bursa"</span>, <span class="st">"Yalova"</span>, <span class="st">"Kocaeli"</span>, <span class="st">"Bilecik"</span>, <span class="st">"Sakarya"</span>)</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a>assign_region <span class="ot">&lt;-</span> <span class="cf">function</span>(city) {</span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>  <span class="cf">if</span> (city <span class="sc">%in%</span> akdeniz) {</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="st">"Akdeniz"</span>)</span>
+<span id="cb22-12"><a href="#cb22-12" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (city <span class="sc">%in%</span> dogu_anadolu) {</span>
+<span id="cb22-13"><a href="#cb22-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="st">"Doğu Anadolu"</span>)</span>
+<span id="cb22-14"><a href="#cb22-14" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (city <span class="sc">%in%</span> ege) {</span>
+<span id="cb22-15"><a href="#cb22-15" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="st">"Ege"</span>)</span>
+<span id="cb22-16"><a href="#cb22-16" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (city <span class="sc">%in%</span> guneydogu_anadolu) {</span>
+<span id="cb22-17"><a href="#cb22-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="st">"Güneydoğu Anadolu"</span>)</span>
+<span id="cb22-18"><a href="#cb22-18" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (city <span class="sc">%in%</span> ic_anadolu) {</span>
+<span id="cb22-19"><a href="#cb22-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="st">"İç Anadolu"</span>)</span>
+<span id="cb22-20"><a href="#cb22-20" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (city <span class="sc">%in%</span> karadeniz) {</span>
+<span id="cb22-21"><a href="#cb22-21" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="st">"Karadeniz"</span>)</span>
+<span id="cb22-22"><a href="#cb22-22" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> <span class="cf">if</span> (city <span class="sc">%in%</span> marmara) {</span>
+<span id="cb22-23"><a href="#cb22-23" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="st">"Marmara"</span>)</span>
+<span id="cb22-24"><a href="#cb22-24" aria-hidden="true" tabindex="-1"></a>  } <span class="cf">else</span> {</span>
+<span id="cb22-25"><a href="#cb22-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">return</span>(<span class="cn">NA</span>)</span>
+<span id="cb22-26"><a href="#cb22-26" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb22-27"><a href="#cb22-27" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb22-28"><a href="#cb22-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb22-29"><a href="#cb22-29" aria-hidden="true" tabindex="-1"></a>library_museum_updated <span class="ot">&lt;-</span> library_museum_updated <span class="sc">%&gt;%</span> <span class="fu">mutate</span>(<span class="at">region =</span> <span class="fu">sapply</span>(city, assign_region)) <span class="sc">%&gt;%</span> <span class="fu">relocate</span>(region,<span class="at">.after =</span> city)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
 </div>
 
 
