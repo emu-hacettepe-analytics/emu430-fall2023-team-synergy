@@ -33,6 +33,43 @@ load("library_museum_updated.RData")
 data <-library_museum_updated
 ```
 
+For regional analysis, 'region' column will first be added to the data:
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+akdeniz <- c("Antalya", "Burdur", "Isparta", "Mersin", "Adana", "Hatay", "Osmaniye", "Kahramanmaraş")
+dogu_anadolu <- c("Malatya", "Erzincan", "Elazığ", "Tunceli", "Bingöl", "Erzurum", "Muş", "Bitlis", "Şırnak", "Kars", "Ağrı", "Ardahan", "Van", "Iğdır", "Hakkari")
+ege <- c("İzmir", "Aydın", "Muğla", "Manisa", "Denizli", "Uşak", "Kütahya", "Afyonkarahisar")
+guneydogu_anadolu <- c("Gaziantep", "Kilis", "Adıyaman", "Şanlıurfa", "Diyarbakır", "Mardin", "Batman", "Siirt")
+ic_anadolu <- c("Eskişehir", "Konya", "Ankara", "Çankırı", "Aksaray", "Kırıkkale", "Kırşehir", "Yozgat", "Niğde", "Nevşehir", "Kayseri", "Karaman", "Sivas")
+karadeniz <- c("Bolu", "Düzce", "Zonguldak", "Karabük", "Bartın", "Kastamonu", "Çorum", "Sinop", "Samsun", "Amasya", "Tokat", "Ordu", "Giresun", "Gümüşhane", "Trabzon", "Bayburt", "Rize", "Artvin")
+marmara <- c("Çanakkale", "Balıkesir", "Edirne", "Tekirdağ", "Kırklareli", "İstanbul", "Bursa", "Yalova", "Kocaeli", "Bilecik", "Sakarya")
+
+assign_region <- function(city) {
+  if (city %in% akdeniz) {
+    return("Akdeniz")
+  } else if (city %in% dogu_anadolu) {
+    return("Doğu Anadolu")
+  } else if (city %in% ege) {
+    return("Ege")
+  } else if (city %in% guneydogu_anadolu) {
+    return("Güneydoğu Anadolu")
+  } else if (city %in% ic_anadolu) {
+    return("İç Anadolu")
+  } else if (city %in% karadeniz) {
+    return("Karadeniz")
+  } else if (city %in% marmara) {
+    return("Marmara")
+  } else {
+    return(NA)
+  }
+}
+
+data <- data %>% mutate(region = sapply(city, assign_region)) %>% relocate(region,.after = city)
+data$region <- as.factor(data$region)
+```
+
 ## 1) Correlation Between Attributes
 
 ```{r, message=FALSE, results='asis'}
@@ -80,8 +117,8 @@ cat("Correlation between Literacy Rate and Proportion of Youth Population:",cor_
 #| code-summary: "Show the code"
 data|>
   filter(year==2022)|>
-ggplot(aes(x = literacy_rate, y = prop_youth_population)) +
-  geom_point(color = "purple") +  
+ggplot(aes(x = literacy_rate, y = prop_youth_population, color = region)) +
+  geom_point() +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x)+ 
   labs(x = "Literacy Rate", y = "Proportion of Youth Population") + 
   ggtitle("Scatter Plot of Literacy Rate vs Proportion of Youth Population in 2022") +
@@ -109,8 +146,10 @@ this with visualizations.
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-ggplot(data, aes(x = population, y = book_num)) +
-  geom_point(color = "purple") +  
+data|>
+  filter(year==2022) |>
+ggplot( aes(x = population, y = book_num,color = region)) +
+  geom_point() +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x)+ 
   labs(x = "Population", y = "Book Count") + 
   ggtitle("Scatter Plot of Population vs Book Count") +
@@ -129,9 +168,9 @@ the following plot was created.
 #| code-fold: true
 #| code-summary: "Show the code"
 data %>%
-  filter(population <= 5000000) %>%
-  ggplot(aes(x = population, y = book_num)) +
-  geom_point(color = "purple") +  
+  filter(population <= 5000000 & year==2022) %>%
+  ggplot(aes(x = population, y = book_num,color = region)) +
+  geom_point() +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
   labs(x = "Population", y = "Book Count") + 
   ggtitle("Scatter Plot of Population vs Book Count (Max 5 Million Population)") +
@@ -227,7 +266,11 @@ population_2022 <- data %>%
 population_change <- data %>%
   filter(year==2015) %>% select(city) %>% mutate(population_frac = (population_2022$population-population_2015$population)/population_2015$population) %>% arrange(desc(population_frac))
 
-head(population_change)
+kable(head(population_change), 
+      format = "html", 
+      caption = "Top 6 Cities in Turkey with the Highest Population Change",
+      col.names = c("City", "Population CFraction"),
+      align = c("c", "c")) 
 ```
 
 ```{r}
@@ -241,7 +284,7 @@ p1 <- data %>%
   labs(x = "Years", y = "User Number per Population") + 
   ggtitle("Scatter Plot of Cities vs User Number per Population") +
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5),legend.position = "none") 
+  theme(plot.title = element_text(size = 12, hjust = 0.5)) 
 p2 <- data %>% 
   filter(city %in% c("Yalova","Tekirdağ","Antalya","Kocaeli")) %>%
   ggplot(aes(x = year, y = population/10000000, color = city)) +
@@ -336,40 +379,42 @@ ggplot(top_literacy_cities_2020, aes(x = loaned_book_num, y = suicides_num, colo
 
 ```
 
-### 3) Regional Analysis
-
-For regional analysis, 'region' column will first be added to the data.
+### 4) Regional Analysis
 
 ```{r}
-#| code-fold: true
+#| warning: false
 #| code-summary: "Show the code"
-akdeniz <- c("Antalya", "Burdur", "Isparta", "Mersin", "Adana", "Hatay", "Osmaniye", "Kahramanmaraş")
-dogu_anadolu <- c("Malatya", "Erzincan", "Elazığ", "Tunceli", "Bingöl", "Erzurum", "Muş", "Bitlis", "Şırnak", "Kars", "Ağrı", "Ardahan", "Van", "Iğdır", "Hakkari")
-ege <- c("İzmir", "Aydın", "Muğla", "Manisa", "Denizli", "Uşak", "Kütahya", "Afyon")
-guneydogu_anadolu <- c("Gaziantep", "Kilis", "Adıyaman", "Şanlıurfa", "Diyarbakır", "Mardin", "Batman", "Siirt")
-ic_anadolu <- c("Eskişehir", "Konya", "Ankara", "Çankırı", "Aksaray", "Kırıkkale", "Kırşehir", "Yozgat", "Niğde", "Nevşehir", "Kayseri", "Karaman", "Sivas")
-karadeniz <- c("Bolu", "Düzce", "Zonguldak", "Karabük", "Bartın", "Kastamonu", "Çorum", "Sinop", "Samsun", "Amasya", "Tokat", "Ordu", "Giresun", "Gümüşhane", "Trabzon", "Bayburt", "Rize", "Artvin")
-marmara <- c("Çanakkale", "Balıkesir", "Edirne", "Tekirdağ", "Kırklareli", "İstanbul", "Bursa", "Yalova", "Kocaeli", "Bilecik", "Sakarya")
+#| code-fold: true
+data %>%
+  filter(year == 2022) %>%
+  pivot_longer(cols = c(cinema_audiences_num, theater_audiences_num), names_to = "Audience_Type", values_to = "Audience_Num") %>%
+  ggplot(aes(x = region, y = Audience_Num, fill = Audience_Type)) +
+  geom_boxplot(position = "dodge") +
+  scale_y_log10() +
+  labs(x = "Region", y = "Audience Number", fill = "Audience Type") +
+  ggtitle("Cinema and Theater Audience Numbers by Region in 2022") +
+theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
 
-assign_region <- function(city) {
-  if (city %in% akdeniz) {
-    return("Akdeniz")
-  } else if (city %in% dogu_anadolu) {
-    return("Doğu Anadolu")
-  } else if (city %in% ege) {
-    return("Ege")
-  } else if (city %in% guneydogu_anadolu) {
-    return("Güneydoğu Anadolu")
-  } else if (city %in% ic_anadolu) {
-    return("İç Anadolu")
-  } else if (city %in% karadeniz) {
-    return("Karadeniz")
-  } else if (city %in% marmara) {
-    return("Marmara")
-  } else {
-    return(NA)
-  }
-}
-
-library_museum_updated <- library_museum_updated %>% mutate(region = sapply(city, assign_region)) %>% relocate(region,.after = city)
 ```
+
+-AÇIKLAMA- beyza
+
+```{r}
+#| warning: false
+#| code-summary: "Show the code"
+#| code-fold: true
+data %>%
+  filter(year == 2022) %>%
+  pivot_longer(cols = c(ministry_museum_visitor_num, private_museum_visitor_num), names_to = "Visitor_Type", values_to = "Visitor_Num") %>%
+  ggplot(aes(x = region, y = Visitor_Num, fill = Visitor_Type)) +
+  geom_boxplot(position = "dodge") +
+  scale_y_log10() +
+  labs(x = "Region", y = "Visitor Number", fill = "Museum Type") +
+  ggtitle("Ministry and Private Museum Visitor Numbers by Region in 2022") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
+
+```
+
+-AÇIKLAMA- kerem
