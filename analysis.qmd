@@ -101,7 +101,7 @@ between the proportion of the young population and the literacy rate.
 
 ## 2) Relationship Between Attributes
 
-### 2.1)
+### 2.1) Literacy Rate vs. Proportion of Youth Population
 
 ```{r}
 #| code-fold: true
@@ -110,7 +110,9 @@ cor_pop_book_2 <- cor(data$literacy_rate, data$prop_youth_population)
 cat("Correlation between Literacy Rate and Proportion of Youth Population:",cor_pop_book_2,"\n")
 ```
 
-\-\--ACIKLAMA
+The correlation of - 0.69 indicates a negative relationship between
+literacy rate and proportion of youth population. This situation may be
+due to the number of children in the preschool age group.
 
 ```{r}
 #| code-fold: true
@@ -126,9 +128,14 @@ ggplot(aes(x = literacy_rate, y = prop_youth_population, color = region)) +
   theme(plot.title = element_text(size = 12, hjust = 0.5))
 ```
 
-ACIKLAMA-beyza
+This plot shows an inverse relationship between two attributes. Cities
+in the Marmara region have a high literacy rate and a low youth
+population, while the situation is the opposite for cities in the Doğu
+Anadolu region. This may reflect the impact of socio-economic
+differences between the Marmara and Doğu Anadolu regions, as well as the
+effect of children entering the workforce at an early age.
 
-### 2.2)
+### 2.2) Population vs. Number of Books
 
 ```{r}
 #| code-fold: true
@@ -183,7 +190,7 @@ We supported the correlation results with visualizations. We can say
 that there is a tendency for the number of books in libraries to
 increase as the population in cities generally increases.
 
-### 2.3)
+### 2.3) City Comparison
 
 ```{r}
 #| code-fold: true
@@ -236,7 +243,7 @@ data %>%
   theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust=1,size=6))
 ```
 
--AÇIKLAMA beyza
+-AÇIKLAMA keremcik
 
 ```{r}
 #| code-fold: true
@@ -255,6 +262,12 @@ data %>%
 
 -AÇIKLAMA kerem
 
+### 2.4) Library User Number and Population Change Over Time
+
+To observe the change in library user number in the cities with the
+highest population growth between 2015 and 2022, we start by identifying
+the six cities where the population has changed the most.
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -266,10 +279,9 @@ population_2022 <- data %>%
 population_change <- data %>%
   filter(year==2015) %>% select(city) %>% mutate(population_frac = (population_2022$population-population_2015$population)/population_2015$population) %>% arrange(desc(population_frac))
 
-kable(head(population_change), 
-      format = "html", 
+kable(head(population_change),
       caption = "Top 6 Cities in Turkey with the Highest Population Change",
-      col.names = c("City", "Population CFraction"),
+      col.names = c("City", "Population Fraction"),
       align = c("c", "c")) 
 ```
 
@@ -284,7 +296,7 @@ p1 <- data %>%
   labs(x = "Years", y = "User Number per Population") + 
   ggtitle("Scatter Plot of Cities vs User Number per Population") +
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5)) 
+  theme(plot.title = element_text(size = 12, hjust = 0.5)) + scale_x_continuous(breaks = seq(min(data$year), max(data$year), by = 1)) + theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1,size=6))
 p2 <- data %>% 
   filter(city %in% c("Yalova","Tekirdağ","Antalya","Kocaeli")) %>%
   ggplot(aes(x = year, y = population/10000000, color = city)) +
@@ -292,13 +304,20 @@ p2 <- data %>%
   labs(x = "Years", y = "Population/10M") + 
   ggtitle("Scatter Plot of Cities vs Population") +
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5))
+  theme(plot.title = element_text(size = 12, hjust = 0.5)) + scale_x_continuous(breaks = seq(min(data$year), max(data$year), by = 1)) + theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1,size=6))
+
 grid.arrange(p1, p2, ncol = 2)
 ```
 
--AÇIKLAMA- beyza bişiler sallayacak
+In the graph, we can observe that the city with the highest population
+growth, Yalova, experienced a significant increase in library user
+numbers between 2015 and 2019. However, in Antalya, despite substantial
+population growth, there is not a significant increase in library users.
+Between 2019 and 2021, there is a noticeable decline in library user
+numbers, influenced by the impact of the pandemic. As of 2022, these
+numbers seem to be on the rise again.
 
-### 3) The number of historical remnants in cities in Turkiye
+## 3) The number of historical remnants in cities in Turkiye
 
 ```{r}
 #| code-fold: true
@@ -379,42 +398,57 @@ ggplot(top_literacy_cities_2020, aes(x = loaned_book_num, y = suicides_num, colo
 
 ```
 
-### 4) Regional Analysis
+## 4) Regional Analysis
+
+### 4.1) Cinema-Theater Audience Numbers
 
 ```{r}
 #| warning: false
 #| code-summary: "Show the code"
 #| code-fold: true
 data %>%
-  filter(year == 2022) %>%
+  filter(year %in% c(2022,2015)) %>%
   pivot_longer(cols = c(cinema_audiences_num, theater_audiences_num), names_to = "Audience_Type", values_to = "Audience_Num") %>%
   ggplot(aes(x = region, y = Audience_Num, fill = Audience_Type)) +
   geom_boxplot(position = "dodge") +
   scale_y_log10() +
-  labs(x = "Region", y = "Audience Number", fill = "Audience Type") +
-  ggtitle("Cinema and Theater Audience Numbers by Region in 2022") +
-theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
+  labs(x = "Region", y = "Audience Number (log10)", fill = "Audience Type") +
+  ggtitle("Cinema and Theater Audience Numbers by Region") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10))   + facet_grid(.~year)
 
 ```
 
--AÇIKLAMA- beyza
+In the graph, we can see the distributions of the number of theater and
+cinema audiences in each region represented on a box plot. In all
+regions, cinema audiences are higher than theater audiences.
+Additionally, looking at the years 2015 and 2022, it is observed that
+there hasn't been much change in these audience numbers.
+
+### 4.2) Ministry and Private Museum Visitors
 
 ```{r}
 #| warning: false
 #| code-summary: "Show the code"
 #| code-fold: true
 data %>%
-  filter(year == 2022) %>%
+  filter(year %in% c(2022,2015)) %>%
   pivot_longer(cols = c(ministry_museum_visitor_num, private_museum_visitor_num), names_to = "Visitor_Type", values_to = "Visitor_Num") %>%
   ggplot(aes(x = region, y = Visitor_Num, fill = Visitor_Type)) +
   geom_boxplot(position = "dodge") +
   scale_y_log10() +
-  labs(x = "Region", y = "Visitor Number", fill = "Museum Type") +
-  ggtitle("Ministry and Private Museum Visitor Numbers by Region in 2022") + 
+  labs(x = "Region", y = "Visitor Number (log10)", fill = "Museum Type") +
+  ggtitle("Ministry and Private Museum Visitor Numbers by Region") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10))
-
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + facet_grid(.~year) + scale_fill_manual(values = c("Pink", "Purple"), labels = c("Ministry Museum", "Private Museum"), name = "Museum Type")
 ```
 
--AÇIKLAMA- kerem
+In the graph, the number of visitors of both ministry and private
+museums in each region is shown with box plot distributions. In the
+Akdeniz and Ege regions, the difference in visits to these two types of
+museums is more pronounced compared to other regions. Excluding the
+Karadeniz and Marmara regions, there has been an increase in visitor
+numbers to ministry museums in all regions over the years. Istanbul has
+the highest number of ministry museum visitors, while Düzce, excluding
+those with zero visitors, has the lowest number of private museum
+visitors.
