@@ -154,7 +154,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#city-comparison" id="toc-city-comparison" class="nav-link" data-scroll-target="#city-comparison">2.3) City Comparison</a></li>
   <li><a href="#library-user-number-and-population-change-over-time" id="toc-library-user-number-and-population-change-over-time" class="nav-link" data-scroll-target="#library-user-number-and-population-change-over-time">2.4) Library User Number and Population Change Over Time</a></li>
   <li><a href="#the-effect-of-literacy-rate-on-suicide-rates-top-10-cities-in-2020" id="toc-the-effect-of-literacy-rate-on-suicide-rates-top-10-cities-in-2020" class="nav-link" data-scroll-target="#the-effect-of-literacy-rate-on-suicide-rates-top-10-cities-in-2020">2.5) The Effect of Literacy Rate on Suicide Rates Top 10 cities in 2020</a></li>
-  <li><a href="#rate-distribution" id="toc-rate-distribution" class="nav-link" data-scroll-target="#rate-distribution">2.6 Rate Distribution</a></li>
+  <li><a href="#rate-distribution" id="toc-rate-distribution" class="nav-link" data-scroll-target="#rate-distribution">2.6) Rate Distribution</a></li>
   </ul></li>
   <li><a href="#the-number-of-historical-remnants-in-cities-in-turkiye" id="toc-the-number-of-historical-remnants-in-cities-in-turkiye" class="nav-link" data-scroll-target="#the-number-of-historical-remnants-in-cities-in-turkiye">3) The number of historical remnants in cities in Turkiye</a></li>
   <li><a href="#regional-analysis" id="toc-regional-analysis" class="nav-link" data-scroll-target="#regional-analysis">4) Regional Analysis</a>
@@ -162,6 +162,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#cinema-theater-audience-numbers" id="toc-cinema-theater-audience-numbers" class="nav-link" data-scroll-target="#cinema-theater-audience-numbers">4.1) Cinema-Theater Audience Numbers</a></li>
   <li><a href="#ministry-and-private-museum-visitors" id="toc-ministry-and-private-museum-visitors" class="nav-link" data-scroll-target="#ministry-and-private-museum-visitors">4.2) Ministry and Private Museum Visitors</a></li>
   <li><a href="#cinema-audience-number-of-the-top-10-cities-in-2020" id="toc-cinema-audience-number-of-the-top-10-cities-in-2020" class="nav-link" data-scroll-target="#cinema-audience-number-of-the-top-10-cities-in-2020">4.3) Cinema Audience Number of the top 10 cities in 2020</a></li>
+  <li><a href="#rate-distribution-for-regions" id="toc-rate-distribution-for-regions" class="nav-link" data-scroll-target="#rate-distribution-for-regions">4.4) Rate Distribution For Regions</a></li>
   </ul></li>
   </ul>
 </nav>
@@ -545,7 +546,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>This chart shows the relationship between the number of books borrowed from libraries and suicide rates. Ankara appears to have the highest number of book borrowings and suicides; Izmir also has similarly high values. The given correlation coefficient is 0.9717, which is a very high and positive value. In other words, it may suggest that as the number of books borrowed increases, the number of suicides also increases.</p>
 </section>
 <section id="rate-distribution" class="level3">
-<h3 class="anchored" data-anchor-id="rate-distribution">2.6 Rate Distribution</h3>
+<h3 class="anchored" data-anchor-id="rate-distribution">2.6) Rate Distribution</h3>
 <details>
 <summary>Show the code</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span><span class="st">`</span><span class="at">Library User Rate</span><span class="st">`</span> <span class="ot">&lt;-</span> data<span class="sc">$</span>user_num <span class="sc">/</span> data<span class="sc">$</span>population</span>
@@ -574,8 +575,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
 <span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Rates Distribution across Years and Cities"</span>,</span>
 <span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Years"</span>,</span>
-<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">"Rate Value"</span>,</span>
-<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"Rate Types"</span></span>
+<span id="cb21-27"><a href="#cb21-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">" Value"</span>,</span>
+<span id="cb21-28"><a href="#cb21-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">" Types"</span></span>
 <span id="cb21-29"><a href="#cb21-29" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb21-30"><a href="#cb21-30" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">0</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
 <span id="cb21-31"><a href="#cb21-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -741,6 +742,45 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <p>The chart shows the distribution between the population of the provinces in Turkey and the number of people going to the cinema. The correlation coefficient of 0.9982, which is a very high value, indicates a strong linear relationship between population and cinema attendance numbers. Therefore, as we can see from the table and correlation value, as the population increases, the number of people going to the cinema increases almost at the same rate.</p>
+</section>
+<section id="rate-distribution-for-regions" class="level3">
+<h3 class="anchored" data-anchor-id="rate-distribution-for-regions">4.4) Rate Distribution For Regions</h3>
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span><span class="st">`</span><span class="at">Library User Rate</span><span class="st">`</span> <span class="ot">&lt;-</span> data<span class="sc">$</span>user_num <span class="sc">/</span> data<span class="sc">$</span>population</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span><span class="st">`</span><span class="at">Borrowed Book Rate</span><span class="st">`</span> <span class="ot">&lt;-</span> data<span class="sc">$</span>loaned_book_num <span class="sc">/</span> data<span class="sc">$</span>user_num</span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span><span class="st">`</span><span class="at">Suicide Rate</span><span class="st">`</span> <span class="ot">&lt;-</span> data<span class="sc">$</span>suicides_num <span class="sc">*</span> <span class="dv">10000</span> <span class="sc">/</span> data<span class="sc">$</span>population</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span><span class="st">`</span><span class="at">Cinema Audience Rate</span><span class="st">`</span> <span class="ot">&lt;-</span> data<span class="sc">$</span>cinema_audiences_num <span class="sc">/</span> data<span class="sc">$</span>population</span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span><span class="st">`</span><span class="at">Theater Audience Rate</span><span class="st">`</span> <span class="ot">&lt;-</span> data<span class="sc">$</span>theater_audiences_num <span class="sc">/</span> data<span class="sc">$</span>population</span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>rate_of_data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span></span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>  <span class="fu">select</span>(region, year, <span class="st">`</span><span class="at">Library User Rate</span><span class="st">`</span>, <span class="st">`</span><span class="at">Borrowed Book Rate</span><span class="st">`</span>, </span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>         <span class="st">`</span><span class="at">Suicide Rate</span><span class="st">`</span>, <span class="st">`</span><span class="at">Cinema Audience Rate</span><span class="st">`</span>, <span class="st">`</span><span class="at">Theater Audience Rate</span><span class="st">`</span>)</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a>tidy_data <span class="ot">&lt;-</span> rate_of_data <span class="sc">%&gt;%</span></span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(year <span class="sc">==</span> <span class="dv">2020</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>    <span class="at">cols =</span> <span class="fu">c</span>(<span class="st">`</span><span class="at">Library User Rate</span><span class="st">`</span>, <span class="st">`</span><span class="at">Borrowed Book Rate</span><span class="st">`</span>, </span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a>             <span class="st">`</span><span class="at">Suicide Rate</span><span class="st">`</span>, <span class="st">`</span><span class="at">Cinema Audience Rate</span><span class="st">`</span>, <span class="st">`</span><span class="at">Theater Audience Rate</span><span class="st">`</span>),</span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">names_to =</span> <span class="st">"rate_type"</span>,</span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">values_to =</span> <span class="st">"rate_value"</span></span>
+<span id="cb29-20"><a href="#cb29-20" aria-hidden="true" tabindex="-1"></a>  )</span>
+<span id="cb29-21"><a href="#cb29-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-22"><a href="#cb29-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-23"><a href="#cb29-23" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(tidy_data, <span class="fu">aes</span>(<span class="at">x =</span> region, <span class="at">y =</span> rate_value, <span class="at">fill =</span> rate_type)) <span class="sc">+</span></span>
+<span id="cb29-24"><a href="#cb29-24" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">position =</span> <span class="st">"dodge"</span>, <span class="at">width =</span> <span class="fl">0.7</span>) <span class="sc">+</span></span>
+<span id="cb29-25"><a href="#cb29-25" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>
+<span id="cb29-26"><a href="#cb29-26" aria-hidden="true" tabindex="-1"></a>    <span class="at">title =</span> <span class="st">"Rates Distribution for Regions"</span>,</span>
+<span id="cb29-27"><a href="#cb29-27" aria-hidden="true" tabindex="-1"></a>    <span class="at">x =</span> <span class="st">"Region"</span>,</span>
+<span id="cb29-28"><a href="#cb29-28" aria-hidden="true" tabindex="-1"></a>    <span class="at">y =</span> <span class="st">" Value"</span>,</span>
+<span id="cb29-29"><a href="#cb29-29" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">" Types"</span></span>
+<span id="cb29-30"><a href="#cb29-30" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
+<span id="cb29-31"><a href="#cb29-31" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme</span>(<span class="at">axis.text.x =</span> <span class="fu">element_text</span>(<span class="at">angle =</span> <span class="dv">45</span>, <span class="at">hjust =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb29-32"><a href="#cb29-32" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_fill_brewer</span>(<span class="at">palette =</span> <span class="st">"Set2"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+<p><img src="analysis_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid" width="672"></p>
 
 
 </section>
