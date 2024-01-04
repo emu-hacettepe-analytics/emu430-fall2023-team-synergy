@@ -376,9 +376,6 @@ high and positive value. In other words, it may suggest that as the
 number of books borrowed increases, the number of suicides also
 increases.
 
-
-
-
 ## 3) The number of historical remnants in cities in Turkiye
 
 ```{r}
@@ -417,9 +414,6 @@ data %>%
   coord_flip()
 
 ```
-
-
-
 
 ## 4) Regional Analysis
 
