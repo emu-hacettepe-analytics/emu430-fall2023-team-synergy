@@ -343,7 +343,6 @@ Between 2019 and 2021, there is a noticeable decline in library user
 numbers, influenced by the impact of the pandemic. As of 2022, these
 numbers seem to be on the rise again.
 
-
 ## 3) Regional Analysis
 
 ### 3.1) Cinema-Theater Audience Numbers
@@ -476,6 +475,7 @@ ggplot(tidy_data, aes(x = year, y = rate_value, fill = rate_type)) +
 -HATİCE AÇIKLAMA-
 
 ### 4.2) Rate Distributions for Regions
+
 ```{r, message=FALSE, results='asis'}
 #| warning: false
 #| code-fold: true
@@ -588,8 +588,8 @@ high and positive value. In other words, it may suggest that as the
 number of books borrowed increases, the number of suicides also
 increases.
 
-
 ## 6) The Number of Historical Remnants in Cities
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
