@@ -385,7 +385,6 @@ data %>%
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-#| warning: false
 top_cities_2020 <- data %>%
   filter(year == 2020) %>%
   arrange(desc(cinema_audiences_num)) %>%
