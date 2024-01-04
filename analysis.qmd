@@ -177,11 +177,14 @@ ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = ci
   geom_point() +
   geom_text_repel(size = 3.5) +
   theme_minimal() +
-  labs(title = "Cinema Audience Distribution by Population",
+  labs(title = "Cinema Audience Distribution by Population in 2020",
        x = "Populatıon",
-       y = "cinema_audiences_num") +
+       y = "cinema audiences number") +
   scale_x_continuous(labels = scales::comma) +
   scale_y_continuous(labels = scales::comma)
+
+correlation <- cor(top_cities_2020$population, top_cities_2020$cinema_audiences_num, use = "complete.obs")
+print(paste("Correlation between population and cinema audiences number:", correlation))
 
 ```
 
@@ -207,6 +210,9 @@ ggplot(top_literacy_cities_2020, aes(x = loaned_book_num, y = suicides_num, colo
        title = "The Effect of Literacy Rate on Suicide Rates") +
   theme_minimal() +
   theme(legend.position = "right")
+
+correlation <- cor(top_literacy_cities_2020$loaned_book_num, top_literacy_cities_2020$suicides_num, use = "complete.obs")
+print(paste("Correlation between loaned book number and number of suicides:", correlation))
 
 ```
 
