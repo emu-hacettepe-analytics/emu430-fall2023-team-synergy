@@ -376,7 +376,7 @@ high and positive value. In other words, it may suggest that as the
 number of books borrowed increases, the number of suicides also
 increases.
 
-### 2.6 Rate Distribution
+### 2.6) Rate Distribution
 
 ```{r, message=FALSE, results='asis'}
 #| warning: false
