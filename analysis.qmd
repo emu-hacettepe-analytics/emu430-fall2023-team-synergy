@@ -493,14 +493,7 @@ there hasn't been much change in these audience numbers.
 #| code-summary: "Show the code"
 #| code-fold: true
 data %>%
-  
-```
-
-```{r}
-
-```
-
-```{filter(year %in% c(2022,2015)) %>%}
+  filter(year %in% c(2022,2015)) %>%
   pivot_longer(cols = c(ministry_museum_visitor_num, private_museum_visitor_num), names_to = "Visitor_Type", values_to = "Visitor_Num") %>%
   ggplot(aes(x = region, y = Visitor_Num, fill = Visitor_Type)) +
   geom_boxplot(position = "dodge") +
@@ -509,6 +502,7 @@ data %>%
   ggtitle("Ministry and Private Museum Visitor Numbers by Region") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + facet_grid(.~year) + scale_fill_manual(values = c("Pink", "Purple"), labels = c("Ministry Museum", "Private Museum"), name = "Museum Type")
+  
 ```
 
 In the graph, the number of visitors of both ministry and private
