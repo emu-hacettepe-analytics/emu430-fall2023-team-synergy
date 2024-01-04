@@ -410,8 +410,8 @@ ggplot(tidy_data, aes(x = year, y = rate_value, fill = rate_type)) +
   labs(
     title = "Rates Distribution across Years and Cities",
     x = "Years",
-    y = "Rate Value",
-    fill = "Rate Types"
+    y = " Value",
+    fill = " Types"
   ) +
   theme(axis.text.x = element_text(angle = 0, hjust = 1)) +
   scale_fill_brewer(palette = "Set2")
