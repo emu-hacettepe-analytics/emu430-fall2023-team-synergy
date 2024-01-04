@@ -601,14 +601,17 @@ ggplot(tidy_data, aes(x = region, y = rate_value, fill = rate_type)) +
 
 ```
 
+### 4.5)Museum Visitor vs. Loaned book
+
 ```{r, message=FALSE, results='asis'}
 #| warning: false
 #| code-fold: true
 #| code-summary: "Show the code"
+
 data$total_museum_visitor_num <- data$ministry_museum_visitor_num+ data$private_museum_visitor_num
 data %>%
   filter(year==2020) %>%
-  pivot_longer(cols = c(total_museum_visitor_num,loaned_book_num), names_to = "Variable_Type", values_to = "Value") %>%
+  pivot_longer(cols = c(total_museum_visitor_num,loaned_book_num), names_to = "Variable_Type",  values_to = "Value") %>%
   ggplot(aes(x = region, y = Value, fill = Variable_Type)) +
   geom_boxplot(position = "dodge") +
   scale_y_log10() +
