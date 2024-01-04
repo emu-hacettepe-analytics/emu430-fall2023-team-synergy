@@ -493,7 +493,14 @@ there hasn't been much change in these audience numbers.
 #| code-summary: "Show the code"
 #| code-fold: true
 data %>%
-  filter(year %in% c(2022,2015)) %>%
+  
+```
+
+```{r}
+
+```
+
+```{filter(year %in% c(2022,2015)) %>%}
   pivot_longer(cols = c(ministry_museum_visitor_num, private_museum_visitor_num), names_to = "Visitor_Type", values_to = "Visitor_Num") %>%
   ggplot(aes(x = region, y = Visitor_Num, fill = Visitor_Type)) +
   geom_boxplot(position = "dodge") +
@@ -590,6 +597,29 @@ ggplot(tidy_data, aes(x = region, y = rate_value, fill = rate_type)) +
   scale_fill_brewer(palette = "Set2")
 
 
+
+
+```
+
+```{r, message=FALSE, results='asis'}
+#| warning: false
+#| code-fold: true
+#| code-summary: "Show the code"
+data$total_museum_visitor_num <- data$ministry_museum_visitor_num+ data$private_museum_visitor_num
+data %>%
+  filter(year==2020) %>%
+  pivot_longer(cols = c(total_museum_visitor_num,loaned_book_num), names_to = "Variable_Type", values_to = "Value") %>%
+  ggplot(aes(x = region, y = Value, fill = Variable_Type)) +
+  geom_boxplot(position = "dodge") +
+  scale_y_log10() +
+  labs(x = "Region", y = "Value (log10 scale)", fill = "Variable Type") +
+  ggtitle("Visitor Numbers and Loaned Book Rates by Region") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + 
+  facet_grid(.~year) + 
+  scale_fill_manual(values = c("darkgreen", "orange"), 
+                    labels = c("Total Museum Visitor", "Loaned Book Rate"), 
+                    name = "Variable Type")
 
 
 ```
