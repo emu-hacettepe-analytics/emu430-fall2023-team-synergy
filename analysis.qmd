@@ -82,7 +82,7 @@ correlation_matrix <- cor(library_museum_updated[, c(3:21)], use = "complete.obs
 melted_corr_matrix <- melt(correlation_matrix)
 
 ggplot(melted_corr_matrix, aes(Var1, Var2, fill = value)) +
-  geom_tile() + labs(x = " ", y = " ") +
+  geom_tile() + labs(x = " ", y = " ") + guides(color = guide_legend(title = "Value"))+
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -123,9 +123,9 @@ ggplot(aes(x = literacy_rate, y = prop_youth_population, color = region)) +
   geom_point() +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x)+ 
   labs(x = "Literacy Rate", y = "Proportion of Youth Population") + 
-  ggtitle("Scatter Plot of Literacy Rate vs Proportion of Youth Population in 2022") +
+  ggtitle("Scatter Plot of Literacy Rate vs Proportion of Youth Population in 2022") + guides(color = guide_legend(title = "Region")) +
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5))
+  theme(plot.title = element_text(size = 12, hjust = 0.5),legend.text = element_text(size = 9), legend.title = element_text(size = 10,hjust = 0.5))
 ```
 
 This plot shows an inverse relationship between two attributes. Cities
@@ -159,9 +159,9 @@ ggplot( aes(x = population, y = book_num,color = region)) +
   geom_point() +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x)+ 
   labs(x = "Population", y = "Book Count") + 
-  ggtitle("Scatter Plot of Population vs Book Count") +
+  ggtitle("Scatter Plot of Population vs Book Count") + guides(color = guide_legend(title = "Region"))+ 
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5),axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) +
+  theme(plot.title = element_text(size = 12, hjust = 0.5),axis.text.x = element_text(angle = 45, hjust = 1, size = 6),legend.text = element_text(size = 9), legend.title = element_text(size = 10,hjust = 0.5)) +
   scale_x_continuous(labels = scales::comma, breaks = seq(0, 15000000, by = 1000000))
 ```
 
@@ -180,9 +180,9 @@ data %>%
   geom_point() +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
   labs(x = "Population", y = "Book Count") + 
-  ggtitle("Scatter Plot of Population vs Book Count (Max 5 Million Population)") +
+  ggtitle("Scatter Plot of Population vs Book Count (Max 5 Million Population)")  +guides(color = guide_legend(title = "Region"))+
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust = 1, size = 6)) +
+  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust = 1, size = 6),legend.text = element_text(size = 9), legend.title = element_text(size = 10,hjust = 0.5)) +
   scale_x_continuous(labels = scales::comma, breaks = seq(0, 5000000, by = 1000000))+ scale_y_continuous(labels = scales::comma)
 ```
 
@@ -320,7 +320,7 @@ p1 <- data %>%
   ggplot(aes(x = year, y = user_num_per_pop, color = city)) +
   geom_line() +  
   labs(x = "Years", y = "User Number per Population") + 
-  ggtitle("Scatter Plot of Cities vs User Number per Population") +
+  ggtitle("Scatter Plot of Cities vs User Number per Population") + guides(color = guide_legend(title = "Value"))+
   theme_minimal() +
   theme(plot.title = element_text(size = 12, hjust = 0.5)) + scale_x_continuous(breaks = seq(min(data$year), max(data$year), by = 1)) + theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1,size=6))
 p2 <- data %>% 
@@ -330,7 +330,7 @@ p2 <- data %>%
   labs(x = "Years", y = "Population/10M") + 
   ggtitle("Scatter Plot of Cities vs Population") +
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5)) + scale_x_continuous(breaks = seq(min(data$year), max(data$year), by = 1)) + theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1,size=6))
+  theme(plot.title = element_text(size = 12, hjust = 0.5)) + scale_x_continuous(breaks = seq(min(data$year), max(data$year), by = 1)) + theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1,size=6),legend.title = element_text(size = 10,hjust = 0.5))
 
 grid.arrange(p1, p2, ncol = 2)
 ```
