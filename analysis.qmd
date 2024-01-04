@@ -297,7 +297,7 @@ the six cities where the population has changed the most.
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-
+#| warning: false
 population_2015 <- data %>%
   filter(year==2015) %>% select(city,population)
 population_2022 <- data %>%
@@ -343,7 +343,223 @@ Between 2019 and 2021, there is a noticeable decline in library user
 numbers, influenced by the impact of the pandemic. As of 2022, these
 numbers seem to be on the rise again.
 
-### 2.5) The Effect of Literacy Rate on Suicide Rates Top 10 cities in 2020
+
+## 3) Regional Analysis
+
+### 3.1) Cinema-Theater Audience Numbers
+
+```{r}
+#| warning: false
+#| code-summary: "Show the code"
+#| code-fold: true
+data %>%
+  filter(year %in% c(2022,2015)) %>%
+  pivot_longer(cols = c(cinema_audiences_num, theater_audiences_num), names_to = "Audience_Type", values_to = "Audience_Num") %>%
+  ggplot(aes(x = region, y = Audience_Num, fill = Audience_Type)) +
+  geom_boxplot(position = "dodge") +
+  scale_y_log10() +
+  labs(x = "Region", y = "Audience Number (log10)", fill = "Audience Type") +
+  ggtitle("Cinema and Theater Audience Numbers by Region") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + scale_fill_manual(values = c("Red", "Blue"), labels = c("Cinema", "Theater"), name = "Audience Type") +
+  facet_grid(.~year)
+
+```
+
+In the graph, we can see the distributions of the number of theater and
+cinema audiences in each region represented on a box plot. In all
+regions, cinema audiences are higher than theater audiences.
+Additionally, looking at the years 2015 and 2022, it is observed that
+there hasn't been much change in these audience numbers.
+
+### 3.2) Ministry and Private Museum Visitors
+
+```{r}
+#| warning: false
+#| code-summary: "Show the code"
+#| code-fold: true
+data %>%
+  filter(year %in% c(2022,2015)) %>%
+  pivot_longer(cols = c(ministry_museum_visitor_num, private_museum_visitor_num), names_to = "Visitor_Type", values_to = "Visitor_Num") %>%
+  ggplot(aes(x = region, y = Visitor_Num, fill = Visitor_Type)) +
+  geom_boxplot(position = "dodge") +
+  scale_y_log10() +
+  labs(x = "Region", y = "Visitor Number (log10)", fill = "Museum Type") +
+  ggtitle("Ministry and Private Museum Visitor Numbers by Region") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + facet_grid(.~year) + scale_fill_manual(values = c("Pink", "Purple"), labels = c("Ministry Museum", "Private Museum"), name = "Museum Type")
+  
+```
+
+In the graph, the number of visitors of both ministry and private
+museums in each region is shown with box plot distributions. In the
+Akdeniz and Ege regions, the difference in visits to these two types of
+museums is more pronounced compared to other regions. Excluding the
+Karadeniz and Marmara regions, there has been an increase in visitor
+numbers to ministry museums in all regions over the years. Istanbul has
+the highest number of ministry museum visitors, while Düzce, excluding
+those with zero visitors, has the lowest number of private museum
+visitors.
+
+### 3.3) Museum Visitor and Loaned Book
+
+```{r, message=FALSE, results='asis'}
+#| warning: false
+#| code-fold: true
+#| code-summary: "Show the code"
+
+data$total_museum_visitor_num <- data$ministry_museum_visitor_num+ data$private_museum_visitor_num
+data %>%
+  filter(year==2020) %>%
+  pivot_longer(cols = c(total_museum_visitor_num,loaned_book_num), names_to = "Variable_Type",  values_to = "Value") %>%
+  ggplot(aes(x = region, y = Value, fill = Variable_Type)) +
+  geom_boxplot(position = "dodge") +
+  scale_y_log10() +
+  labs(x = "Region", y = "Value (log10 scale)", fill = "Variable Type") +
+  ggtitle("Visitor Numbers and Loaned Book Rates by Region") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + 
+  facet_grid(.~year) + 
+  scale_fill_manual(values = c("darkgreen", "orange"), 
+                    labels = c("Total Museum Visitor", "Loaned Book Rate"), 
+                    name = "Variable Type")
+
+
+```
+
+-HATİCE AÇIKLAMA-
+
+## 4) Rate Distributions
+
+### 4.1) Rate Distributions across Years
+
+```{r, message=FALSE, results='asis'}
+#| warning: false
+#| code-fold: true
+#| code-summary: "Show the code"
+
+
+data$`Library User Rate` <- data$user_num / data$population
+data$`Borrowed Book Rate` <- data$loaned_book_num / data$user_num
+data$`Suicide Rate` <- data$suicides_num * 10000 / data$population
+data$`Cinema Audience Rate` <- data$cinema_audiences_num / data$population
+data$`Theater Audience Rate` <- data$theater_audiences_num / data$population
+
+
+rate_of_data <- data %>%
+  select(city, year, `Library User Rate`, `Borrowed Book Rate`, 
+         `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`)
+
+
+tidy_data <- rate_of_data %>%
+  pivot_longer(
+    cols = c(`Library User Rate`, `Borrowed Book Rate`, 
+             `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`),
+    names_to = "rate_type",
+    values_to = "rate_value"
+  )
+
+
+ggplot(tidy_data, aes(x = year, y = rate_value, fill = rate_type)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.7) +
+  labs(
+    title = "Rate Distributions across Years",
+    x = "Years",
+    y = " Value",
+    fill = " Types"
+  ) +
+  theme(axis.text.x = element_text(angle = 0, hjust = 1)) +
+  scale_fill_brewer(palette = "Set2")
+
+
+```
+
+-HATİCE AÇIKLAMA-
+
+### 4.2) Rate Distributions for Regions
+```{r, message=FALSE, results='asis'}
+#| warning: false
+#| code-fold: true
+#| code-summary: "Show the code"
+
+
+data$`Library User Rate` <- data$user_num / data$population
+data$`Borrowed Book Rate` <- data$loaned_book_num / data$user_num
+data$`Suicide Rate` <- data$suicides_num * 10000 / data$population
+data$`Cinema Audience Rate` <- data$cinema_audiences_num / data$population
+data$`Theater Audience Rate` <- data$theater_audiences_num / data$population
+
+
+rate_of_data <- data %>%
+  select(region, year, `Library User Rate`, `Borrowed Book Rate`, 
+         `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`)
+
+
+tidy_data <- rate_of_data %>%
+  filter(year == 2020) %>%
+  pivot_longer(
+    cols = c(`Library User Rate`, `Borrowed Book Rate`, 
+             `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`),
+    names_to = "rate_type",
+    values_to = "rate_value"
+  )
+
+
+ggplot(tidy_data, aes(x = region, y = rate_value, fill = rate_type)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.7) +
+  labs(
+    title = "Rate Distributions for Regions",
+    x = "Region",
+    y = " Value",
+    fill = " Types"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_brewer(palette = "Set2")
+
+
+
+
+```
+
+-HATİCE AÇIKLAMA-
+
+## 5) Top 10 Comparison
+
+### 5.1) Cinema Audience Number of Top 10 Cities
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+top_cities_2020 <- data %>%
+  filter(year == 2020) %>%
+  arrange(desc(cinema_audiences_num)) %>%
+  slice(1:10)
+
+
+ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = city, color = city)) +
+  geom_point() +
+  geom_text_repel(size = 3.5) +
+  theme_minimal() +
+  labs(title = "Cinema Audience Distribution by Population in 2020",
+       x = "Population",
+       y = "Cinema Audiences Number") +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma)
+
+correlation <- cor(top_cities_2020$population, top_cities_2020$cinema_audiences_num, use = "complete.obs")
+print(paste("Correlation between population and cinema audiences number:", correlation))
+
+```
+
+The chart shows the distribution between the population of the provinces
+in Turkey and the number of people going to the cinema. The correlation
+coefficient of 0.9982, which is a very high value, indicates a strong
+linear relationship between population and cinema attendance numbers.
+Therefore, as we can see from the table and correlation value, as the
+population increases, the number of people going to the cinema increases
+almost at the same rate.
+
+### 5.2) The Effect of Literacy Rate on Suicide Rates of Top 10 Cities
 
 ```{r}
 #| code-fold: true
@@ -376,51 +592,8 @@ high and positive value. In other words, it may suggest that as the
 number of books borrowed increases, the number of suicides also
 increases.
 
-### 2.6) Rate Distribution
 
-```{r, message=FALSE, results='asis'}
-#| warning: false
-#| code-fold: true
-#| code-summary: "Show the code"
-
-
-data$`Library User Rate` <- data$user_num / data$population
-data$`Borrowed Book Rate` <- data$loaned_book_num / data$user_num
-data$`Suicide Rate` <- data$suicides_num * 10000 / data$population
-data$`Cinema Audience Rate` <- data$cinema_audiences_num / data$population
-data$`Theater Audience Rate` <- data$theater_audiences_num / data$population
-
-
-rate_of_data <- data %>%
-  select(city, year, `Library User Rate`, `Borrowed Book Rate`, 
-         `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`)
-
-
-tidy_data <- rate_of_data %>%
-  pivot_longer(
-    cols = c(`Library User Rate`, `Borrowed Book Rate`, 
-             `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`),
-    names_to = "rate_type",
-    values_to = "rate_value"
-  )
-
-
-ggplot(tidy_data, aes(x = year, y = rate_value, fill = rate_type)) +
-  geom_bar(stat = "identity", position = "dodge", width = 0.7) +
-  labs(
-    title = "Rates Distribution across Years and Cities",
-    x = "Years",
-    y = " Value",
-    fill = " Types"
-  ) +
-  theme(axis.text.x = element_text(angle = 0, hjust = 1)) +
-  scale_fill_brewer(palette = "Set2")
-
-
-```
-
-## 3) The number of historical remnants in cities in Turkiye
-
+## 6) The Number of Historical Remnants in Cities
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -455,168 +628,5 @@ data %>%
   scale_x_discrete(breaks = unique(data$city)) +
   scale_y_continuous(breaks = seq(0, max(data$ruins_num), by = 1))+
   coord_flip()
-
-```
-
-## 4) Regional Analysis
-
-### 4.1) Cinema-Theater Audience Numbers
-
-```{r}
-#| warning: false
-#| code-summary: "Show the code"
-#| code-fold: true
-data %>%
-  filter(year %in% c(2022,2015)) %>%
-  pivot_longer(cols = c(cinema_audiences_num, theater_audiences_num), names_to = "Audience_Type", values_to = "Audience_Num") %>%
-  ggplot(aes(x = region, y = Audience_Num, fill = Audience_Type)) +
-  geom_boxplot(position = "dodge") +
-  scale_y_log10() +
-  labs(x = "Region", y = "Audience Number (log10)", fill = "Audience Type") +
-  ggtitle("Cinema and Theater Audience Numbers by Region") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + scale_fill_manual(values = c("Red", "Blue"), labels = c("Cinema", "Theater"), name = "Audience Type") +
-  facet_grid(.~year)
-
-```
-
-In the graph, we can see the distributions of the number of theater and
-cinema audiences in each region represented on a box plot. In all
-regions, cinema audiences are higher than theater audiences.
-Additionally, looking at the years 2015 and 2022, it is observed that
-there hasn't been much change in these audience numbers.
-
-### 4.2) Ministry and Private Museum Visitors
-
-```{r}
-#| warning: false
-#| code-summary: "Show the code"
-#| code-fold: true
-data %>%
-  filter(year %in% c(2022,2015)) %>%
-  pivot_longer(cols = c(ministry_museum_visitor_num, private_museum_visitor_num), names_to = "Visitor_Type", values_to = "Visitor_Num") %>%
-  ggplot(aes(x = region, y = Visitor_Num, fill = Visitor_Type)) +
-  geom_boxplot(position = "dodge") +
-  scale_y_log10() +
-  labs(x = "Region", y = "Visitor Number (log10)", fill = "Museum Type") +
-  ggtitle("Ministry and Private Museum Visitor Numbers by Region") + 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + facet_grid(.~year) + scale_fill_manual(values = c("Pink", "Purple"), labels = c("Ministry Museum", "Private Museum"), name = "Museum Type")
-  
-```
-
-In the graph, the number of visitors of both ministry and private
-museums in each region is shown with box plot distributions. In the
-Akdeniz and Ege regions, the difference in visits to these two types of
-museums is more pronounced compared to other regions. Excluding the
-Karadeniz and Marmara regions, there has been an increase in visitor
-numbers to ministry museums in all regions over the years. Istanbul has
-the highest number of ministry museum visitors, while Düzce, excluding
-those with zero visitors, has the lowest number of private museum
-visitors.
-
-### 4.3) Cinema Audience Number of the top 10 cities in 2020
-
-```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
-top_cities_2020 <- data %>%
-  filter(year == 2020) %>%
-  arrange(desc(cinema_audiences_num)) %>%
-  slice(1:10)
-
-
-ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = city)) +
-  geom_point() +
-  geom_text_repel(size = 3.5) +
-  theme_minimal() +
-  labs(title = "Cinema Audience Distribution by Population in 2020",
-       x = "Populatıon",
-       y = "cinema audiences number") +
-  scale_x_continuous(labels = scales::comma) +
-  scale_y_continuous(labels = scales::comma)
-
-correlation <- cor(top_cities_2020$population, top_cities_2020$cinema_audiences_num, use = "complete.obs")
-print(paste("Correlation between population and cinema audiences number:", correlation))
-
-```
-
-The chart shows the distribution between the population of the provinces
-in Turkey and the number of people going to the cinema. The correlation
-coefficient of 0.9982, which is a very high value, indicates a strong
-linear relationship between population and cinema attendance numbers.
-Therefore, as we can see from the table and correlation value, as the
-population increases, the number of people going to the cinema increases
-almost at the same rate.
-
-### 4.4) Rate Distribution For Regions
-
-```{r, message=FALSE, results='asis'}
-#| warning: false
-#| code-fold: true
-#| code-summary: "Show the code"
-
-
-data$`Library User Rate` <- data$user_num / data$population
-data$`Borrowed Book Rate` <- data$loaned_book_num / data$user_num
-data$`Suicide Rate` <- data$suicides_num * 10000 / data$population
-data$`Cinema Audience Rate` <- data$cinema_audiences_num / data$population
-data$`Theater Audience Rate` <- data$theater_audiences_num / data$population
-
-
-rate_of_data <- data %>%
-  select(region, year, `Library User Rate`, `Borrowed Book Rate`, 
-         `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`)
-
-
-tidy_data <- rate_of_data %>%
-  filter(year == 2020) %>%
-  pivot_longer(
-    cols = c(`Library User Rate`, `Borrowed Book Rate`, 
-             `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`),
-    names_to = "rate_type",
-    values_to = "rate_value"
-  )
-
-
-ggplot(tidy_data, aes(x = region, y = rate_value, fill = rate_type)) +
-  geom_bar(stat = "identity", position = "dodge", width = 0.7) +
-  labs(
-    title = "Rates Distribution for Regions",
-    x = "Region",
-    y = " Value",
-    fill = " Types"
-  ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_fill_brewer(palette = "Set2")
-
-
-
-
-```
-
-### 4.5)Museum Visitor vs. Loaned book
-
-```{r, message=FALSE, results='asis'}
-#| warning: false
-#| code-fold: true
-#| code-summary: "Show the code"
-
-data$total_museum_visitor_num <- data$ministry_museum_visitor_num+ data$private_museum_visitor_num
-data %>%
-  filter(year==2020) %>%
-  pivot_longer(cols = c(total_museum_visitor_num,loaned_book_num), names_to = "Variable_Type",  values_to = "Value") %>%
-  ggplot(aes(x = region, y = Value, fill = Variable_Type)) +
-  geom_boxplot(position = "dodge") +
-  scale_y_log10() +
-  labs(x = "Region", y = "Value (log10 scale)", fill = "Variable Type") +
-  ggtitle("Visitor Numbers and Loaned Book Rates by Region") + 
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + 
-  facet_grid(.~year) + 
-  scale_fill_manual(values = c("darkgreen", "orange"), 
-                    labels = c("Total Museum Visitor", "Loaned Book Rate"), 
-                    name = "Variable Type")
-
 
 ```
