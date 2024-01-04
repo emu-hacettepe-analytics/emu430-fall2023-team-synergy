@@ -504,3 +504,45 @@ linear relationship between population and cinema attendance numbers.
 Therefore, as we can see from the table and correlation value, as the
 population increases, the number of people going to the cinema increases
 almost at the same rate.
+
+### 4.4)Rate Distribution
+
+```{r, message=FALSE, results='asis'}
+#| warning: false
+#| code-fold: true
+#| code-summary: "Show the code"
+
+
+data$`Library User Rate` <- data$user_num / data$population
+data$`Borrowed Book Rate` <- data$loaned_book_num / data$user_num
+data$`Suicide Rate` <- data$suicides_num * 10000 / data$population
+data$`Cinema Audience Rate` <- data$cinema_audiences_num / data$population
+data$`Theater Audience Rate` <- data$theater_audiences_num / data$population
+
+
+rate_of_data <- data %>%
+  select(city, year, `Library User Rate`, `Borrowed Book Rate`, 
+         `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`)
+
+
+tidy_data <- rate_of_data %>%
+  pivot_longer(
+    cols = c(`Library User Rate`, `Borrowed Book Rate`, 
+             `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`),
+    names_to = "rate_type",
+    values_to = "rate_value"
+  )
+
+
+ggplot(tidy_data, aes(x = year, y = rate_value, fill = rate_type)) +
+  geom_bar(stat = "identity", position = "dodge", width = 0.7) +
+  labs(
+    title = "Rates Distribution across Years and Cities",
+    x = "Years",
+    y = "Rate Value",
+    fill = "Rate Types"
+  ) +
+  theme(axis.text.x = element_text(angle = 0, hjust = 1)) +
+  scale_fill_brewer(palette = "Set2")
+
+```
