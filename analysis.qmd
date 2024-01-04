@@ -343,6 +343,7 @@ Between 2019 and 2021, there is a noticeable decline in library user
 numbers, influenced by the impact of the pandemic. As of 2022, these
 numbers seem to be on the rise again.
 
+
 ## 3) Regional Analysis
 
 ### 3.1) Cinema-Theater Audience Numbers
@@ -359,7 +360,7 @@ data %>%
   scale_y_log10() +
   labs(x = "Region", y = "Audience Number (log10)", fill = "Audience Type") +
   ggtitle("Cinema and Theater Audience Numbers by Region") +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),plot.title = element_text(size = 12, hjust = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + scale_fill_manual(values = c("Red", "Blue"), labels = c("Cinema", "Theater"), name = "Audience Type") +
   facet_grid(.~year)
 
@@ -409,12 +410,12 @@ visitors.
 
 data$total_museum_visitor_num <- data$ministry_museum_visitor_num+ data$private_museum_visitor_num
 data %>%
-  filter(year==2020) %>%
+  filter(year %in% c(2020,2018)) %>%
   pivot_longer(cols = c(total_museum_visitor_num,loaned_book_num), names_to = "Variable_Type",  values_to = "Value") %>%
   ggplot(aes(x = region, y = Value, fill = Variable_Type)) +
   geom_boxplot(position = "dodge") +
   scale_y_log10() +
-  labs(x = "Region", y = "Value (log10 scale)", fill = "Variable Type") +
+  labs(x = "Region", y = "Value (log10)", fill = "Variable Type") +
   ggtitle("Visitor Numbers and Loaned Book Rates by Region") + 
   theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + 
@@ -440,20 +441,20 @@ data %>%
 
 data$`Library User Rate` <- data$user_num / data$population
 data$`Borrowed Book Rate` <- data$loaned_book_num / data$user_num
-data$`Suicide Rate` <- data$suicides_num * 10000 / data$population
+data$`Suicide Rate(x1000)` <- data$suicides_num * 1000 / data$population
 data$`Cinema Audience Rate` <- data$cinema_audiences_num / data$population
 data$`Theater Audience Rate` <- data$theater_audiences_num / data$population
 
 
 rate_of_data <- data %>%
   select(city, year, `Library User Rate`, `Borrowed Book Rate`, 
-         `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`)
+         `Suicide Rate(x1000)`, `Cinema Audience Rate`, `Theater Audience Rate`)
 
 
 tidy_data <- rate_of_data %>%
   pivot_longer(
     cols = c(`Library User Rate`, `Borrowed Book Rate`, 
-             `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`),
+             `Suicide Rate(x1000)`, `Cinema Audience Rate`, `Theater Audience Rate`),
     names_to = "rate_type",
     values_to = "rate_value"
   )
@@ -467,16 +468,14 @@ ggplot(tidy_data, aes(x = year, y = rate_value, fill = rate_type)) +
     y = " Value",
     fill = " Types"
   ) +
-  theme(axis.text.x = element_text(angle = 0, hjust = 1),plot.title = element_text(size = 12, hjust = 0.5)) +
+  theme(axis.text.x = element_text(angle = 0, hjust = 1)) +
   scale_fill_brewer(palette = "Set2")
-
 
 ```
 
 -HATİCE AÇIKLAMA-
 
 ### 4.2) Rate Distributions for Regions
-
 ```{r, message=FALSE, results='asis'}
 #| warning: false
 #| code-fold: true
@@ -485,21 +484,21 @@ ggplot(tidy_data, aes(x = year, y = rate_value, fill = rate_type)) +
 
 data$`Library User Rate` <- data$user_num / data$population
 data$`Borrowed Book Rate` <- data$loaned_book_num / data$user_num
-data$`Suicide Rate` <- data$suicides_num * 10000 / data$population
+data$`Suicide Rate(x1000)` <- data$suicides_num * 1000/ data$population
 data$`Cinema Audience Rate` <- data$cinema_audiences_num / data$population
 data$`Theater Audience Rate` <- data$theater_audiences_num / data$population
 
 
 rate_of_data <- data %>%
   select(region, year, `Library User Rate`, `Borrowed Book Rate`, 
-         `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`)
+         `Suicide Rate(x1000)`, `Cinema Audience Rate`, `Theater Audience Rate`)
 
 
 tidy_data <- rate_of_data %>%
   filter(year == 2020) %>%
   pivot_longer(
     cols = c(`Library User Rate`, `Borrowed Book Rate`, 
-             `Suicide Rate`, `Cinema Audience Rate`, `Theater Audience Rate`),
+             `Suicide Rate(x1000)`, `Cinema Audience Rate`, `Theater Audience Rate`),
     names_to = "rate_type",
     values_to = "rate_value"
   )
@@ -513,11 +512,8 @@ ggplot(tidy_data, aes(x = region, y = rate_value, fill = rate_type)) +
     y = " Value",
     fill = " Types"
   ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1),plot.title = element_text(size = 12, hjust = 0.5)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
   scale_fill_brewer(palette = "Set2")
-
-
-
 
 ```
 
@@ -547,7 +543,8 @@ ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = ci
   scale_y_continuous(labels = scales::comma)
 
 correlation <- cor(top_cities_2020$population, top_cities_2020$cinema_audiences_num, use = "complete.obs")
-cat("Correlation between population and cinema audiences number:",correlation,"\n")
+print(paste("Correlation between population and cinema audiences number in 2020:", correlation))
+
 ```
 
 The chart shows the distribution between the population of the provinces
@@ -579,7 +576,8 @@ ggplot(top_literacy_cities_2020, aes(x = loaned_book_num, y = suicides_num, colo
   theme(legend.position = "right")
 
 correlation <- cor(top_literacy_cities_2020$loaned_book_num, top_literacy_cities_2020$suicides_num, use = "complete.obs")
-cat("Correlation between loaned book number and number of suicides:",correlation,"\n")
+print(paste("Correlation between loaned book number and number of suicides in 2020:", correlation))
+
 ```
 
 This chart shows the relationship between the number of books borrowed
@@ -590,8 +588,8 @@ high and positive value. In other words, it may suggest that as the
 number of books borrowed increases, the number of suicides also
 increases.
 
-## 6) The Number of Historical Remnants in Cities
 
+## 6) The Number of Historical Remnants in Cities
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
