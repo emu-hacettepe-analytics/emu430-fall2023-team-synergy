@@ -2,7 +2,13 @@
 sidebar: false 
 ---
 
+::: {style="text-align: center;"}
 ![](images/synergy_logo.png){fig-align="center"}
+
+~**%100\ ENERGY**~
+
+^**What\ kind\ of\ SYNERGY**^
+:::
 
 Welcome! This is our project webpage.
 
