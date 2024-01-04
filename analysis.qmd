@@ -7,40 +7,139 @@ editor:
 
 Loading necessary libraries :
 
-```{r}
+```{r, message=FALSE, results='asis'}
 #| warning: false
-#| code-fold: true
 #| code-summary: "Show the code"
+#| code-fold: true
+
 library(readxl)
 library(ggplot2)
 library(tidyverse)
 library(dplyr)
 library(knitr)
 library(ggrepel)
-
-
+library(reshape2)
+library(gridExtra)
 ```
 
 Load the data:
 
-```{r}
-#| code-fold: true
+```{r, message=FALSE, results='asis'}
+#| warning: false
 #| code-summary: "Show the code"
+#| code-fold: true
+
 load("library_museum_updated.RData")
 data <-library_museum_updated
 ```
 
-## 1) Relationship between Population and the Number of books in the library
+For regional analysis, 'region' column will first be added to the data:
 
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-# Veri türlerini düzelt
-data$population <- as.numeric(data$population)
-data$book_num <- as.numeric(data$book_num)
+akdeniz <- c("Antalya", "Burdur", "Isparta", "Mersin", "Adana", "Hatay", "Osmaniye", "Kahramanmaraş")
+dogu_anadolu <- c("Malatya", "Erzincan", "Elazığ", "Tunceli", "Bingöl", "Erzurum", "Muş", "Bitlis", "Şırnak", "Kars", "Ağrı", "Ardahan", "Van", "Iğdır", "Hakkari")
+ege <- c("İzmir", "Aydın", "Muğla", "Manisa", "Denizli", "Uşak", "Kütahya", "Afyonkarahisar")
+guneydogu_anadolu <- c("Gaziantep", "Kilis", "Adıyaman", "Şanlıurfa", "Diyarbakır", "Mardin", "Batman", "Siirt")
+ic_anadolu <- c("Eskişehir", "Konya", "Ankara", "Çankırı", "Aksaray", "Kırıkkale", "Kırşehir", "Yozgat", "Niğde", "Nevşehir", "Kayseri", "Karaman", "Sivas")
+karadeniz <- c("Bolu", "Düzce", "Zonguldak", "Karabük", "Bartın", "Kastamonu", "Çorum", "Sinop", "Samsun", "Amasya", "Tokat", "Ordu", "Giresun", "Gümüşhane", "Trabzon", "Bayburt", "Rize", "Artvin")
+marmara <- c("Çanakkale", "Balıkesir", "Edirne", "Tekirdağ", "Kırklareli", "İstanbul", "Bursa", "Yalova", "Kocaeli", "Bilecik", "Sakarya")
 
+assign_region <- function(city) {
+  if (city %in% akdeniz) {
+    return("Akdeniz")
+  } else if (city %in% dogu_anadolu) {
+    return("Doğu Anadolu")
+  } else if (city %in% ege) {
+    return("Ege")
+  } else if (city %in% guneydogu_anadolu) {
+    return("Güneydoğu Anadolu")
+  } else if (city %in% ic_anadolu) {
+    return("İç Anadolu")
+  } else if (city %in% karadeniz) {
+    return("Karadeniz")
+  } else if (city %in% marmara) {
+    return("Marmara")
+  } else {
+    return(NA)
+  }
+}
 
-# Korelasyon hesapla
+data <- data %>% mutate(region = sapply(city, assign_region)) %>% relocate(region,.after = city)
+data$region <- as.factor(data$region)
+```
+
+## 1) Correlation Between Attributes
+
+```{r, message=FALSE, results='asis'}
+#| warning: false
+#| code-summary: "Show the code"
+#| code-fold: true
+
+correlation_matrix <- cor(library_museum_updated[, c(3:21)], use = "complete.obs")
+
+melted_corr_matrix <- melt(correlation_matrix)
+
+ggplot(melted_corr_matrix, aes(Var1, Var2, fill = value)) +
+  geom_tile() + labs(x = " ", y = " ") +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, hjust = 1))
+
+```
+
+In the areas where the squares are dark red, there is a positive
+correlation between the variables. In cities with a high population, the
+number of museums, libraries, theater and cinema audience numbers, and
+the number of suicides are also high. Conversely, when the number of
+pieces in a museum is high, it is observed that the number of museums,
+libraries, audience numbers of theaters and cinemas are also high. The
+variables intersecting in dark blue-purple squares, on the other hand,
+have a negative correlation. That is, there is an inverse relationship
+between the proportion of the young population and the literacy rate.
+
+## 2) Relationship Between Attributes
+
+### 2.1) Literacy Rate vs. Proportion of Youth Population
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+cor_pop_book_2 <- cor(data$literacy_rate, data$prop_youth_population)
+cat("Correlation between Literacy Rate and Proportion of Youth Population:",cor_pop_book_2,"\n")
+```
+
+The correlation of - 0.69 indicates a negative relationship between
+literacy rate and proportion of youth population. This situation may be
+due to the number of children in the preschool age group.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+data|>
+  filter(year==2022)|>
+ggplot(aes(x = literacy_rate, y = prop_youth_population, color = region)) +
+  geom_point() +  
+  geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x)+ 
+  labs(x = "Literacy Rate", y = "Proportion of Youth Population") + 
+  ggtitle("Scatter Plot of Literacy Rate vs Proportion of Youth Population in 2022") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5))
+```
+
+This plot shows an inverse relationship between two attributes. Cities
+in the Marmara region have a high literacy rate and a low youth
+population, while the situation is the opposite for cities in the Doğu
+Anadolu region. This may reflect the impact of socio-economic
+differences between the Marmara and Doğu Anadolu regions, as well as the
+effect of children entering the workforce at an early age.
+
+### 2.2) Population vs. Number of Books
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
 cor_pop_book <- cor(data$population, data$book_num)
 cat("Correlation between Population and Number of Books:",cor_pop_book,"\n")
 ```
@@ -51,13 +150,13 @@ population of cities generally increases, there is a tendency for the
 number of books in libraries to increase as well. Let's try to support
 this with visualizations.
 
-### Plots
-
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-ggplot(data, aes(x = population, y = book_num)) +
-  geom_point(color = "purple") +  
+data|>
+  filter(year==2022) |>
+ggplot( aes(x = population, y = book_num,color = region)) +
+  geom_point() +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x)+ 
   labs(x = "Population", y = "Book Count") + 
   ggtitle("Scatter Plot of Population vs Book Count") +
@@ -76,9 +175,9 @@ the following plot was created.
 #| code-fold: true
 #| code-summary: "Show the code"
 data %>%
-  filter(population <= 5000000) %>%
-  ggplot(aes(x = population, y = book_num)) +
-  geom_point(color = "purple") +  
+  filter(population <= 5000000 & year==2022) %>%
+  ggplot(aes(x = population, y = book_num,color = region)) +
+  geom_point() +  
   geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
   labs(x = "Population", y = "Book Count") + 
   ggtitle("Scatter Plot of Population vs Book Count (Max 5 Million Population)") +
@@ -91,7 +190,160 @@ We supported the correlation results with visualizations. We can say
 that there is a tendency for the number of books in libraries to
 increase as the population in cities generally increases.
 
-### 2) The number of historical remnants in cities in Turkiye
+### 2.3) City Comparison
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+data %>%
+  filter(year == 2022) %>%
+  mutate(book_per_person=book_num/population,city = factor(city, levels = unique(city[order(book_per_person, decreasing = TRUE)]))) %>%
+  ggplot(aes(x = city, y = book_per_person * 100)) +
+  geom_point(color = "purple") +  
+  geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
+  labs(x = "Cities", y = "Book Number per Population (*100)") + 
+  ggtitle("Scatter Plot of Cities vs Book Number per Population in 2022") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
+```
+
+We looked into the number of books per capita in the population of each
+city, as we believed it would provide a more meaningful insight in this
+graph. The book count on the Y-axis was multiplied by 100. The graph is
+based on data from the year 2022. According to the results,
+surprisingly, Nevşehir and Bayburt appear to be leading cities in this
+aspect. Cities with high populations and diverse demographics, such as
+Istanbul, Ankara, Izmir, and Antalya, are at the bottom of the list. For
+now, let's keep Bayburt in mind from this graph :)
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+data %>%
+  filter(year == 2022) %>%
+  mutate(museum_per_person=((ministry_museum_num + private_museum_num)/population), city = factor(city, levels = unique(city[order(museum_per_person, decreasing = TRUE)]))) %>%
+  ggplot(aes(x = city, y = museum_per_person * 100000)) +
+  geom_point(color = "purple") +  
+  geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
+  labs(x = "Cities", y = "Museum Number per Population (*100000) ") + 
+  ggtitle("Scatter Plot of Cities vs Museum Number per Population in 2022") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
+
+```
+
+In this graph, you can see the ratio of the combined number of ministry
+and private museums to the population of each city. The Y-axis has been
+multiplied by 100,000 for meaningful representation, showing the number
+of museums per 100,000 people.The graph is based on data from the year
+2022. While Doğu and Güney Doğu cities are at the bottom of the list,
+once again, Bayburt leads the chart.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+data %>%
+  filter(year == 2022) %>%
+  mutate(book_num_per_lib=(book_num/public_lib), city = factor(city, levels = unique(city[order(book_num_per_lib, decreasing = TRUE)]))) %>%
+  ggplot(aes(x = city, y = book_num_per_lib )) +
+  geom_point(color = "purple") +  
+  geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
+  labs(x = "Cities", y = "Book Number per Library") + 
+  ggtitle("Scatter Plot of Cities vs Book Number per Library in 2022") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust=1,size=6))
+```
+
+At this point, we aimed to examine the ratio of library sizes among
+cities by looking at the proportion of the number of books in a city to
+the number of libraries. The graph is based on data from the year 2022.
+The difference between Istanbul and Ankara is quite striking. There's
+nearly a threefold difference in library sizes between Turkey's two most
+populous cities. The leading city remains unchanged at the top position
+in this aspect as well.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+data %>%
+  filter(year == 2022) %>%
+  mutate(user_num_per_pop=(user_num/population), city = factor(city, levels = unique(city[order(user_num_per_pop, decreasing = TRUE)]))) %>%
+  ggplot(aes(x = city, y = user_num_per_pop )) +
+  geom_point(color = "purple") +  
+  geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
+  labs(x = "Cities", y = "User Number per Population") + 
+  ggtitle("Scatter Plot of Cities vs User Number per Population in 2022") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust=1,size=6))
+```
+
+It's time for Bayburt's leadership to change now, as we've reached the
+statistics on library user counts :) The graph is based on data from the
+year 2022. What's remarkable here is the higher user count-to-population
+ratio is occured in smaller cities. In the top position, Batman stands
+out, having a library usage statistic nearly three times its population.
+We've considered the possibility of potential inaccuracies in the
+records. Once again, our highly populated cities form the bottom of the
+list. Another noteworthy point is Ankara's user count ratio being ahead
+of Istanbul.
+
+### 2.4) Library User Number and Population Change Over Time
+
+To observe the change in library user number in the cities with the
+highest population growth between 2015 and 2022, we start by identifying
+the six cities where the population has changed the most.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+population_2015 <- data %>%
+  filter(year==2015) %>% select(city,population)
+population_2022 <- data %>%
+  filter(year==2022) %>% select(city,population)
+population_change <- data %>%
+  filter(year==2015) %>% select(city) %>% mutate(population_frac = (population_2022$population-population_2015$population)/population_2015$population) %>% arrange(desc(population_frac))
+
+kable(head(population_change),
+      caption = "Top 6 Cities in Turkey with the Highest Population Change",
+      col.names = c("City", "Population Fraction"),
+      align = c("c", "c")) 
+```
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+p1 <- data %>% 
+  filter(city %in% c("Yalova","Tekirdağ","Antalya","Kocaeli")) %>% mutate(user_num_per_pop=(user_num/population)) %>%
+  ggplot(aes(x = year, y = user_num_per_pop, color = city)) +
+  geom_line() +  
+  labs(x = "Years", y = "User Number per Population") + 
+  ggtitle("Scatter Plot of Cities vs User Number per Population") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5)) + scale_x_continuous(breaks = seq(min(data$year), max(data$year), by = 1)) + theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1,size=6))
+p2 <- data %>% 
+  filter(city %in% c("Yalova","Tekirdağ","Antalya","Kocaeli")) %>%
+  ggplot(aes(x = year, y = population/10000000, color = city)) +
+  geom_line() +  
+  labs(x = "Years", y = "Population/10M") + 
+  ggtitle("Scatter Plot of Cities vs Population") +
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = 0.5)) + scale_x_continuous(breaks = seq(min(data$year), max(data$year), by = 1)) + theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1,size=6))
+
+grid.arrange(p1, p2, ncol = 2)
+```
+
+In the graph, we can observe that the city with the highest population
+growth, Yalova, experienced a significant increase in library user
+numbers between 2015 and 2019. However, in Antalya, despite substantial
+population growth, there is not a significant increase in library users.
+Between 2019 and 2021, there is a noticeable decline in library user
+numbers, influenced by the impact of the pandemic. As of 2022, these
+numbers seem to be on the rise again.
+
+## 3) The number of historical remnants in cities in Turkiye
 
 ```{r}
 #| code-fold: true
@@ -133,40 +385,7 @@ data %>%
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-data %>%
-  filter(year == 2022) %>%
-  mutate(book_per_person=book_num/population,city = factor(city, levels = unique(city[order(book_per_person, decreasing = TRUE)]))) %>%
-  ggplot(aes(x = city, y = book_per_person * 100)) +
-  geom_point(color = "purple") +  
-  geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
-  labs(x = "Cities", y = "Book Number Per Population (*100)") + 
-  ggtitle("Scatter Plot of Cities vs Book Number Per Population") +
-  theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
-```
-
-```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
-data %>%
-  filter(year == 2022) %>%
-  mutate(museum_per_person=((ministry_museum_num + private_museum_num)/population), city = factor(city, levels = unique(city[order(museum_per_person, decreasing = TRUE)]))) %>%
-  ggplot(aes(x = city, y = museum_per_person * 100000)) +
-  geom_point(color = "purple") +  
-  geom_smooth(method = "lm", se = FALSE, color = "yellow", formula = y ~ x) + 
-  labs(x = "Cities", y = "Museum Number Per Population (*100000)") + 
-  ggtitle("Scatter Plot of Cities vs Museum Number Per Population") +
-  theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 90, hjust = 1, size = 6))
-
-```
-
-
-<<<<<<< HEAD
-
-```{r}
-#| code-fold: true
-#| code-summary: "Show the code"
+#| warning: false
 top_cities_2020 <- data %>%
   filter(year == 2020) %>%
   arrange(desc(cinema_audiences_num)) %>%
@@ -187,11 +406,6 @@ correlation <- cor(top_cities_2020$population, top_cities_2020$cinema_audiences_
 print(paste("Correlation between population and cinema audiences number:", correlation))
 
 ```
-
-
->>>>>>> sadsadjaskdhkashdjaskda
-
-
 
 ```{r}
 #| code-fold: true
@@ -216,67 +430,58 @@ print(paste("Correlation between loaned book number and number of suicides:", co
 
 ```
 
+## 4) Regional Analysis
 
-
-<<<<<<< HEAD
-
-
+### 4.1) Cinema-Theater Audience Numbers
 
 ```{r}
-#| code-fold: true
+#| warning: false
 #| code-summary: "Show the code"
-data$population <- as.numeric(data$population)
-data$book_num <- as.numeric(data$book_num)
-data$public_lib <- as.numeric(data$public_lib)
-data$user_num <- as.numeric(data$user_num)
-data$user_num_per_thousand <- as.numeric(data$user_num_per_thousand)
-data$loaned_book_num <- as.numeric(data$loaned_book_num)
-data$ministry_museum_piece_num <- as.numeric(data$ministry_museum_piece_num)
-data$ministry_museum_num <- as.numeric(data$ministry_museum_num)
-data$ministry_museum_visitor_num <- as.numeric(data$ministry_museum_visitor_num)
-data$ruins_num <- as.numeric(data$ruins_num)
-data$private_museum_piece_num <- as.numeric(data$private_museum_piece_num)
-data$private_museum_personnel_num <- as.numeric(data$private_museum_personnel_num)
-data$private_museum_num <- as.numeric(data$private_museum_num)
-data$private_museum_visitor_num <- as.numeric(data$private_museum_visitor_num)
-data$cinema_audiences_num <- as.numeric(data$cinema_audiences_num)
-data$theater_audiences_num <- as.numeric(data$theater_audiences_num)
-data$literacy_rate <- as.numeric(data$literacy_rate)
-data$suicides_num <- as.numeric(data$suicides_num)
-
-cor_pop_book_2 <- cor(data$population, data$public_lib)
-cat("Correlation between Population and Number of Library:",cor_pop_book_2,"\n")
-
-cor_pop_book_3 <- cor(data$book_num, data$public_lib)
-cat("Correlation between Number of Book and Number of Library:",cor_pop_book_3,"\n")
-
-cor_pop_book_4 <- cor(data$user_num, data$public_lib)
-cat("Correlation between User Number and Number of Library:",cor_pop_book_4,"\n")
-
-cor_pop_book_5 <- cor(data$literacy_rate, data$public_lib)
-cat("Correlation between Literacy Rate and Number of Library:",cor_pop_book_5,"\n")
+#| code-fold: true
+data %>%
+  filter(year %in% c(2022,2015)) %>%
+  pivot_longer(cols = c(cinema_audiences_num, theater_audiences_num), names_to = "Audience_Type", values_to = "Audience_Num") %>%
+  ggplot(aes(x = region, y = Audience_Num, fill = Audience_Type)) +
+  geom_boxplot(position = "dodge") +
+  scale_y_log10() +
+  labs(x = "Region", y = "Audience Number (log10)", fill = "Audience Type") +
+  ggtitle("Cinema and Theater Audience Numbers by Region") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + scale_fill_manual(values = c("Red", "Blue"), labels = c("Cinema", "Theater"), name = "Audience Type") +
+  facet_grid(.~year)
 
 ```
+
+In the graph, we can see the distributions of the number of theater and
+cinema audiences in each region represented on a box plot. In all
+regions, cinema audiences are higher than theater audiences.
+Additionally, looking at the years 2015 and 2022, it is observed that
+there hasn't been much change in these audience numbers.
+
+### 4.2) Ministry and Private Museum Visitors
 
 ```{r}
-data_subset <- data %>%
-  filter(year %in% c(2015, 2016, 2017, 2018, 2019, 2020, 2021))
-
-model <- lm(public_lib ~ population + book_num + user_num + literacy_rate, data = data_subset)
-summary(model)
-
-new_data_2022 <- data %>%
-  filter(year == 2022) 
-
-new_data_2022 <- data.frame(
-  population = new_data_2022$population,
-  book_num = new_data_2022$book_num,
-  user_num = new_data_2022$user_num,
-  literacy_rate = new_data_2022$literacy_rate
-)
-
-predictions_2022 <- predict(model, new_data_2022)
-predictions_2022
-
-
+#| warning: false
+#| code-summary: "Show the code"
+#| code-fold: true
+data %>%
+  filter(year %in% c(2022,2015)) %>%
+  pivot_longer(cols = c(ministry_museum_visitor_num, private_museum_visitor_num), names_to = "Visitor_Type", values_to = "Visitor_Num") %>%
+  ggplot(aes(x = region, y = Visitor_Num, fill = Visitor_Type)) +
+  geom_boxplot(position = "dodge") +
+  scale_y_log10() +
+  labs(x = "Region", y = "Visitor Number (log10)", fill = "Museum Type") +
+  ggtitle("Ministry and Private Museum Visitor Numbers by Region") + 
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + facet_grid(.~year) + scale_fill_manual(values = c("Pink", "Purple"), labels = c("Ministry Museum", "Private Museum"), name = "Museum Type")
 ```
+
+In the graph, the number of visitors of both ministry and private
+museums in each region is shown with box plot distributions. In the
+Akdeniz and Ege regions, the difference in visits to these two types of
+museums is more pronounced compared to other regions. Excluding the
+Karadeniz and Marmara regions, there has been an increase in visitor
+numbers to ministry museums in all regions over the years. Istanbul has
+the highest number of ministry museum visitors, while Düzce, excluding
+those with zero visitors, has the lowest number of private museum
+visitors.
