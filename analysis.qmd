@@ -406,6 +406,14 @@ print(paste("Correlation between population and cinema audiences number:", corre
 
 ```
 
+The chart shows the distribution between the population of the provinces
+in Turkey and the number of people going to the cinema. The correlation
+coefficient of 0.9982, which is a very high value, indicates a strong
+linear relationship between population and cinema attendance numbers.
+Therefore, as we can see from the table and correlation value, as the
+population increases, the number of people going to the cinema increases
+almost at the same rate.
+
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
@@ -420,7 +428,7 @@ ggplot(top_literacy_cities_2020, aes(x = loaned_book_num, y = suicides_num, colo
   geom_point() +
   geom_text_repel(aes(label = city)) +
   labs(x = "Loaned Book Number", y = "Number of Suicides",
-       title = "The Effect of Literacy Rate on Suicide Rates") +
+       title = "The Effect of Literacy Rate on Suicide Rates in 2020") +
   theme_minimal() +
   theme(legend.position = "right")
 
@@ -428,6 +436,14 @@ correlation <- cor(top_literacy_cities_2020$loaned_book_num, top_literacy_cities
 print(paste("Correlation between loaned book number and number of suicides:", correlation))
 
 ```
+
+This chart shows the relationship between the number of books borrowed
+from libraries and suicide rates. Ankara appears to have the highest
+number of book borrowings and suicides; Izmir also has similarly high
+values. The given correlation coefficient is 0.9717, which is a very
+high and positive value. In other words, it may suggest that as the
+number of books borrowed increases, the number of suicides also
+increases.
 
 ## 4) Regional Analysis
 
