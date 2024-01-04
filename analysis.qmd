@@ -82,7 +82,7 @@ correlation_matrix <- cor(library_museum_updated[, c(3:21)], use = "complete.obs
 melted_corr_matrix <- melt(correlation_matrix)
 
 ggplot(melted_corr_matrix, aes(Var1, Var2, fill = value)) +
-  geom_tile() + labs(x = " ", y = " ") + guides(color = guide_legend(title = "Value"))+
+  geom_tile() + labs(x = " ", y = " ") + guides(color = guide_legend(title = "Value"))+ 
   scale_fill_gradient2(low = "blue", high = "red", mid = "white", midpoint = 0) +
   theme_minimal() +
   theme(axis.text.x = element_text(angle = 90, hjust = 1))
@@ -188,7 +188,9 @@ data %>%
 
 We supported the correlation results with visualizations. We can say
 that there is a tendency for the number of books in libraries to
-increase as the population in cities generally increases.
+increase as the population in cities generally increases. When we look
+at it regionally, we can clearly see that the cities in the Eastern
+Anatolia region are visibly below the trend.
 
 ### 2.3) City Comparison
 
@@ -320,15 +322,16 @@ p1 <- data %>%
   ggplot(aes(x = year, y = user_num_per_pop, color = city)) +
   geom_line() +  
   labs(x = "Years", y = "User Number per Population") + 
-  ggtitle("Scatter Plot of Cities vs User Number per Population") + guides(color = guide_legend(title = "Value"))+
+  ggtitle("Scatter Plot of Cities vs User Number per Population") + guides(color = guide_legend(title = "City"))+
   theme_minimal() +
-  theme(plot.title = element_text(size = 12, hjust = 0.5)) + scale_x_continuous(breaks = seq(min(data$year), max(data$year), by = 1)) + theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1,size=6))
+  theme(plot.title = element_text(size = 12, hjust = 0.5)) + scale_x_continuous(breaks = seq(min(data$year), max(data$year), by = 1)) + theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1,size=6), legend.title = element_text(size = 10, hjust = 0.5))
+
 p2 <- data %>% 
   filter(city %in% c("Yalova","Tekirdağ","Antalya","Kocaeli")) %>%
   ggplot(aes(x = year, y = population/10000000, color = city)) +
   geom_line() +  
   labs(x = "Years", y = "Population/10M") + 
-  ggtitle("Scatter Plot of Cities vs Population") +
+  ggtitle("Scatter Plot of Cities vs Population") + guides(color = guide_legend(title = "City")) +
   theme_minimal() +
   theme(plot.title = element_text(size = 12, hjust = 0.5)) + scale_x_continuous(breaks = seq(min(data$year), max(data$year), by = 1)) + theme(plot.title = element_text(size = 12, hjust = 0.5), axis.text.x = element_text(angle = 45, hjust=1,size=6),legend.title = element_text(size = 10,hjust = 0.5))
 
@@ -467,7 +470,7 @@ ggplot(tidy_data, aes(x = year, y = rate_value, fill = rate_type)) +
     y = " Value",
     fill = " Types"
   ) +
-  theme(axis.text.x = element_text(angle = 0, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 0, hjust = 1),legend.title = element_text(size = 10,hjust = 0.5)) +
   scale_fill_brewer(palette = "Set2")
 
 ```
@@ -512,7 +515,7 @@ ggplot(tidy_data, aes(x = region, y = rate_value, fill = rate_type)) +
     y = " Value",
     fill = " Types"
   ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),legend.title = element_text(size = 10,hjust = 0.5)) +
   scale_fill_brewer(palette = "Set2")
 
 ```
@@ -535,16 +538,15 @@ top_cities_2020 <- data %>%
 ggplot(top_cities_2020, aes(x = population, y = cinema_audiences_num, label = city, color = city)) +
   geom_point() +
   geom_text_repel(size = 3.5) +
-  theme_minimal() +
+  theme_minimal() + 
   labs(title = "Cinema Audience Distribution by Population in 2020",
        x = "Population",
        y = "Cinema Audiences Number") +
   scale_x_continuous(labels = scales::comma) +
-  scale_y_continuous(labels = scales::comma)
+  scale_y_continuous(labels = scales::comma)+ theme(legend.title = element_text(size = 10,hjust = 0.5)) + guides(color = guide_legend(title = "City"))
 
 correlation <- cor(top_cities_2020$population, top_cities_2020$cinema_audiences_num, use = "complete.obs")
-print(paste("Correlation between population and cinema audiences number in 2020:", correlation))
-
+cat("Correlation between population and cinema audiences number in 2020:",correlation,"\n")
 ```
 
 The chart shows the distribution between the population of the provinces
@@ -567,43 +569,57 @@ top_literacy_cities_2020 <- data_2020 %>%
   arrange(desc(literacy_rate)) %>%
   slice_head(n = 10)
 
-ggplot(top_literacy_cities_2020, aes(x = loaned_book_num, y = suicides_num, color = city)) +
+ggplot(top_literacy_cities_2020, aes(x = literacy_rate * population, y = suicides_num, color = city)) +
   geom_point() +
   geom_text_repel(aes(label = city)) +
-  labs(x = "Loaned Book Number", y = "Number of Suicides",
+  labs(x = "Literacy Rate", y = "Number of Suicides",
        title = "The Effect of Literacy Rate on Suicide Rates in 2020") +
   theme_minimal() +
   theme(legend.position = "right")
 
 correlation <- cor(top_literacy_cities_2020$loaned_book_num, top_literacy_cities_2020$suicides_num, use = "complete.obs")
-print(paste("Correlation between loaned book number and number of suicides in 2020:", correlation))
-
+cat("Correlation between loaned book number and number of suicides in 2020:",correlation,"\n")
 ```
 
-This chart shows the relationship between the number of books borrowed
-from libraries and suicide rates. Ankara appears to have the highest
-number of book borrowings and suicides; Izmir also has similarly high
-values. The given correlation coefficient is 0.9717, which is a very
-high and positive value. In other words, it may suggest that as the
-number of books borrowed increases, the number of suicides also
-increases.
+This graph depicts the relationship between literacy rates and suicide
+rates. The highest occurrences of both book reading and suicide cases
+are observed in Ankara; similarly, Izmir also has high values. The given
+correlation coefficient is 0.9949, which is very high and positive.
+Therefore, it can be stated that as literacy rates increase, so do
+suicide rates.
 
 ## 6) The Number of Historical Remnants in Cities
+
+The aim here is to conduct a study on the number of museums in cities
+with historical remnants.
 
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-top5_ruins <- data %>%
+filtered_data <- data %>%
+  filter(ruins_num > 0)
+cor_historical_museums <- cor(filtered_data$ruins_num,filtered_data$ministry_museum_num)
+cat("The correlation between the number of historical remnants in cities with historical remnants and the number of museums.:",cor_historical_museums,"\n")
+
+```
+
+It can be stated that there is a strong relationship according to the correlation.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+top10_museum <- filtered_data %>%
   filter(year == 2022) %>%
-  arrange(desc(ruins_num)) %>%
-  head(5) %>%
-  select(city, ruins_num)
-kable(top5_ruins, 
+  arrange(desc(ministry_museum_num)) %>%
+  head(10) %>%
+  select(city, ministry_museum_num)
+kable(top10_museum, 
       format = "html", 
-      caption = "Top 5 Cities in Turkey with the Highest Number of Historical Remnants in 2022",
-      col.names = c("City", "Historical Remnants"),
+      caption = "The top 10 cities with the most museums in cities with historical remnants in 2022.",
+      col.names = c("City", "Museums"),
       align = c("c", "c")) 
 ```
+The table above shows the top 10 cities in Turkey for the year 2022 with the most museums in cities with historical remnants.
 
 ```{r}
 #| code-fold: true
@@ -625,4 +641,19 @@ data %>%
   scale_y_continuous(breaks = seq(0, max(data$ruins_num), by = 1))+
   coord_flip()
 
+```
+This table illustrates the cities in Turkey with the most historical remnants for the year 2022. When we compare this with the previous table, we can observe similarities. Let's visualize this as well.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+data%>% filter(year == 2022 ,ruins_num > 0, ministry_museum_num >0) %>% ggplot(aes(x = ruins_num, y = ministry_museum_num, color = city)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE, color = "#FBDA21", formula = y ~ x) +
+  labs(x = "Historical Remnants", y = "Museums") +
+  ggtitle("Scatter Plot of Historical Remnants vs Museums in 2022") + guides(color = guide_legend(title = "City"))+
+  theme_minimal() +
+  theme(plot.title = element_text(size = 12, hjust = -1), legend.title = element_text(size = 10,hjust = 0.5 )) +
+  scale_y_continuous(breaks = seq(0, max(data$ministry_museum_num), by = 1)) +
+  scale_x_continuous(breaks = seq(0, max(data$ruins_num), by = 1))
 ```
