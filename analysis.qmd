@@ -5,6 +5,42 @@ editor:
     wrap: 72
 ---
 
+## Key Takeaways:
+
+-   There appears to be a positive correlation among several variables.
+    In cities with larger populations, there tends to be a higher number
+    of museums, libraries, as well as greater audience numbers for
+    theaters and cinemas, alongside an increase in suicide rates.
+    Additionally, it's observed that when a museum has a large
+    collection, the number of museums, libraries, and the audiences for
+    theaters and cinemas in that area are also typically higher.
+    However, there is a notable inverse relationship between the
+    percentage of the young population and the literacy rate.
+
+-   Despite population size often correlating with cultural resources,
+    the data for 2022 unveils intriguing deviations. While larger cities
+    like Istanbul, Ankara, Izmir, and Antalya typically showcase lower
+    rankings in metrics like books per capita and library sizes, smaller
+    cities like Bayburt remarkably lead in these aspects. Moreover, the
+    strikingly high user count-to-population ratio in smaller cities,
+    exemplified by Batman's library usage statistics, challenges the
+    expected norms, suggesting a higher propensity for library
+    engagement in smaller urban centers.
+
+-   While there are pronounced regional disparities in the number of
+    borrowed books, the count of museum visitors exhibits a more
+    consistent trend across regions. Additionally, fluctuations in
+    library usage rates from 2019 to 2022 and regional preferences stand
+    out prominently.
+
+-   Graph (5.1), the very high correlation (0.9982) between population
+    growth and cinema audience numbers, especially in densely populated
+    areas of big cities, can be explained by the abundance and
+    accessibility of movie theaters. Graph (5.2), although there is a
+    high correlation (0.9711) between literacy rates and suicide rates,
+    the reasons for this relationship may be complex and may not imply a
+    direct cause-and-effect connection.
+
 Loading necessary libraries :
 
 ```{r, message=FALSE, results='asis'}

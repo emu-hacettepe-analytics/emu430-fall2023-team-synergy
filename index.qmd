@@ -5,9 +5,9 @@ sidebar: false
 ::: {style="text-align: center;"}
 ![](images/synergy_logo.png){fig-align="center"}
 
-~**%100\ ENERGY**~
+~**%100 ENERGY**~
 
-^**What\ kind\ of\ SYNERGY**^
+^**What kind of SYNERGY**^
 :::
 
 Welcome! This is our project webpage.
@@ -32,4 +32,6 @@ In our project, we will use a data set containing statistics of museums and libr
 
 In addition, by working on the cultural values of cities according to years, average, maximum, etc. we can determine the values. These analyzes will help us understand the use of cultural institutions in each city and the balances between demand and provision. The results will guide us in determining the demands for cultural services, identifying deficiencies and highlighting areas that require further development.
 
-# Data Set
+# Project Teaser
+
+Use the link for teaser: [Teaser Link](https://drive.google.com/file/d/1qJZS8pJmd0qyMaLCSMSsHGedU_UrcUKW/view?usp=sharing)
