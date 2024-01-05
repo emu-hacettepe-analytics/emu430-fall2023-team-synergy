@@ -429,7 +429,17 @@ data %>%
 
 ```
 
--HATİCE AÇIKLAMA-
+The graph focuses on the relationship between the total number of museum
+visitors in both state-run and private sectors and the number of
+borrowed books in the years 2018 and 2020. A significant observation
+from the graph is the high standard deviation in the number of borrowed
+books across all regions. This indicates pronounced differences in book
+borrowings, with these variations spreading over a wider range than
+anticipated. In contrast, the number of museum visitors presents a more
+consistent trend. This suggests that the count of visitors to museums
+varies less from region to region, exhibiting more stability. These
+insights help us understand the regional dynamics and interactions of
+library and museum services.
 
 ## 4) Rate Distributions
 
@@ -475,7 +485,13 @@ ggplot(tidy_data, aes(x = year, y = rate_value, fill = rate_type)) +
 
 ```
 
--HATİCE AÇIKLAMA-
+In the presented graph, various ratios are compared to discern trends.
+Notably, there was a sharp decline in the library usage rate from 2019
+to 2020, potentially attributed to the global pandemic, which compelled
+individuals to spend more time at home. This decline persisted into
+2021. However, by 2022, there was a sudden resurgence, almost reverting
+to its previous levels. Concurrently, recent years have witnessed a
+concerning rise in suicide rates.
 
 ### 4.2) Rate Distributions for Regions
 
@@ -520,7 +536,14 @@ ggplot(tidy_data, aes(x = region, y = rate_value, fill = rate_type)) +
 
 ```
 
--HATİCE AÇIKLAMA-
+The graph provides a detailed examination of the previously mentioned
+ratios across different regions. Notably, the Central Anatolia region
+stands out with a notably higher library usage rate compared to other
+cities. In contrast, the Aegean region exhibits the least engagement in
+library services. Furthermore, when scrutinizing theater audience rates,
+the Southeastern Anatolia region registers a value close to zero,
+highlighting a significantly lower attendance or interest in theatrical
+performances in that area.
 
 ## 5) Top 10 Comparison
 
@@ -603,7 +626,8 @@ cat("The correlation between the number of historical remnants in cities with hi
 
 ```
 
-It can be stated that there is a strong relationship according to the correlation.
+It can be stated that there is a strong relationship according to the
+correlation.
 
 ```{r}
 #| code-fold: true
@@ -619,7 +643,9 @@ kable(top10_museum,
       col.names = c("City", "Museums"),
       align = c("c", "c")) 
 ```
-The table above shows the top 10 cities in Turkey for the year 2022 with the most museums in cities with historical remnants.
+
+The table above shows the top 10 cities in Turkey for the year 2022 with
+the most museums in cities with historical remnants.
 
 ```{r}
 #| code-fold: true
@@ -642,7 +668,10 @@ data %>%
   coord_flip()
 
 ```
-This table illustrates the cities in Turkey with the most historical remnants for the year 2022. When we compare this with the previous table, we can observe similarities. Let's visualize this as well.
+
+This table illustrates the cities in Turkey with the most historical
+remnants for the year 2022. When we compare this with the previous
+table, we can observe similarities. Let's visualize this as well.
 
 ```{r}
 #| code-fold: true
